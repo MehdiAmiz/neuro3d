@@ -253,7 +253,7 @@ export const App = () => {
       setAuthData({ name: '', email: '', password: '', confirmPassword: '' });
       toast({
         title: "Success",
-        description: "Successfully registered! Welcome to DimenXioner Studio.",
+        description: "Successfully registered! Welcome to NexodusAI Studio.",
       });
     } catch (error) {
       toast({
@@ -307,7 +307,7 @@ export const App = () => {
             <Sparkles className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl lg:text-5xl font-bold mb-4">
-            DimenXioner{" "}
+            NexodusAI{" "}
             <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent">
               Studio
             </span>
@@ -544,7 +544,7 @@ export const App = () => {
       <Dialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
         <DialogContent className="glass-card max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-2xl text-foreground text-center">Welcome to DimenXioner Studio</DialogTitle>
+            <DialogTitle className="text-2xl text-foreground text-center">Welcome to NexodusAI Studio</DialogTitle>
             <DialogDescription className="text-muted-foreground text-center">
               Sign in or create an account to start generating amazing 3D content
             </DialogDescription>

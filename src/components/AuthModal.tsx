@@ -257,7 +257,7 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                 <User className="w-8 h-8 text-white" />
               </motion.div>
               <h2 className="text-2xl font-bold text-foreground mb-2">
-                Welcome to DimenXioner
+                Welcome to NexodusAI
               </h2>
               <p className="text-foreground/60">
                 {activeTab === 'signin' ? 'Sign in to your account' : 'Create your account'}

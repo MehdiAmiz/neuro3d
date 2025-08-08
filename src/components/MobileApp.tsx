@@ -81,8 +81,8 @@ export const MobileApp = () => {
               Coming Soon
             </span>
           </h2>
-          <p className="text-xl text-foreground/80 max-w-4xl mx-auto leading-relaxed">
-            Take DimenXioner with you everywhere. Our mobile app will bring the full power of AI-powered 3D conversion to your smartphone.
+          <p className="text-xl text-foreground/70 max-w-4xl mx-auto leading-relaxed">
+            Take NexodusAI with you everywhere. Our mobile app will bring the full power of AI-powered 3D conversion to your smartphone.
           </p>
         </motion.div>
         
@@ -105,7 +105,7 @@ export const MobileApp = () => {
                       <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl mx-auto mb-3 flex items-center justify-center">
                         <Sparkles className="w-8 h-8 text-white" />
                       </div>
-                      <h3 className="text-white font-bold text-lg">DimenXioner</h3>
+                      <h3 className="text-white font-bold text-lg">NexodusAI</h3>
                       <p className="text-white/70 text-sm">AI 3D Converter</p>
                     </div>
                     

@@ -10,7 +10,7 @@ const contactMethods = [
     icon: Mail,
     title: "Email Support",
     description: "Get detailed responses within 24 hours",
-    value: "support@dimenxioner.com",
+    value: "support@nexodusai.com",
     gradient: "from-blue-500 to-cyan-500",
     emoji: "📧",
     delay: 0.1
@@ -179,8 +179,8 @@ export const Contact = () => {
             </span>
           </h2>
           
-          <p className="text-xl text-foreground/80 max-w-4xl mx-auto leading-relaxed">
-            Have questions about DimenXioner? Our support team is here to help you succeed with your 3D modeling projects.
+          <p className="text-xl text-foreground/70 max-w-4xl mx-auto leading-relaxed">
+            Have questions about NexodusAI? Our support team is here to help you succeed with your 3D modeling projects.
           </p>
         </motion.div>
         

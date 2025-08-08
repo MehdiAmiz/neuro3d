@@ -100,12 +100,14 @@ export const HowItWorks = () => {
             <Sparkles className="w-12 h-12 text-white" />
           </motion.div>
           
-          <h2 className="text-4xl lg:text-5xl font-display font-bold mb-8">
-            How DimenXioner{" "}
-            <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent">
-              Works
-            </span>
-          </h2>
+          <motion.h2 
+            className="text-4xl md:text-5xl font-bold text-center mb-4 bg-gradient-primary bg-clip-text text-transparent"
+            variants={itemVariants}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            How NexodusAI{" "}
+            <span className="text-foreground">Works</span>
+          </motion.h2>
           
           <p className="text-xl text-foreground/70 max-w-4xl mx-auto leading-relaxed">
             Transform your 2D images into stunning 3D models in just four simple steps. 
@@ -340,13 +342,12 @@ export const HowItWorks = () => {
         
         {/* Enhanced Stats Section */}
         <div className="text-center mt-32 mb-20">
-          <h3 className="text-3xl lg:text-4xl font-display font-bold mb-12">
-            Why Choose{" "}
-            <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-              DimenXioner
-            </span>
+          <h3 className="text-2xl font-bold text-foreground mb-4">
+            Ready to Transform Your Ideas?
           </h3>
-          
+          <p className="text-foreground/70 mb-6">
+            Join thousands of creators who are already using NexodusAI to bring their 2D concepts to life in stunning 3D.
+          </p>
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {[
               { 

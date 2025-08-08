@@ -108,9 +108,8 @@ export const FAQ = () => {
               Questions
             </span>
           </h2>
-          <p className="text-xl text-foreground/70 max-w-3xl mx-auto">
-            Everything you need to know about DimenXioner. Can't find what you're looking for? 
-            <span className="text-primary font-semibold"> Contact our support team.</span>
+          <p className="text-xl text-foreground/70 max-w-4xl mx-auto leading-relaxed">
+            Everything you need to know about NexodusAI. Can't find what you're looking for?
           </p>
         </motion.div>
 
@@ -225,8 +224,8 @@ export const FAQ = () => {
             <h3 className="text-xl font-bold mb-4 text-foreground">
               Still have questions?
             </h3>
-            <p className="text-foreground/70 mb-6">
-              Our support team is here to help you get the most out of DimenXioner.
+            <p className="text-foreground/70">
+              Our support team is here to help you get the most out of NexodusAI.
             </p>
             
             <motion.button

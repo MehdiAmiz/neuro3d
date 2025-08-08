@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { AuthModal } from "./AuthModal";
 import { useAuth } from "@/contexts/AuthContext";
+import { Logo } from "./Logo";
 
 interface HeaderProps {
   isAppPage?: boolean;
@@ -41,19 +42,9 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
-            <motion.div 
-              className="w-8 h-8 bg-gradient-neural rounded-lg neon-glow"
-              animate={{ 
-                rotate: [0, 360],
-                scale: [1, 1.1, 1]
-              }}
-              transition={{ 
-                rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-                scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-              }}
-            />
+            <Logo />
             <Link to="/" className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              DimenXioner
+              NexodusAI
             </Link>
           </motion.div>
 

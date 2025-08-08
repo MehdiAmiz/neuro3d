@@ -131,14 +131,9 @@ export const Hero = () => {
               </motion.span>
             </motion.h1>
             
-            <motion.p 
-              className="text-xl text-foreground/80 mb-8 max-w-2xl"
-              variants={itemVariants}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              DimenXioner uses advanced AI to transform your 2D images into detailed 3D models in seconds. 
-              Perfect for game development, product visualization, and creative projects.
-            </motion.p>
+            <p className="text-xl text-foreground/80 mb-8 max-w-3xl mx-auto leading-relaxed">
+              NexodusAI uses advanced AI to transform your 2D images into detailed 3D models in seconds.
+            </p>
             
             <motion.div 
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
@@ -216,7 +211,7 @@ export const Hero = () => {
               />
               <motion.img
                 src={heroImage}
-                alt="2D to 3D Transformation with DimenXioner"
+                alt="2D to 3D Transformation with NexodusAI"
                 className="relative z-10 w-full h-auto rounded-2xl shadow-neural border border-primary/20 glass-card"
                 initial={{ opacity: 0, scale: 0.8, rotateY: -15 }}
                 animate={{ opacity: 1, scale: 1, rotateY: 0 }}

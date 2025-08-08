@@ -91,8 +91,8 @@ export const Reviews = () => {
             </span>
           </h2>
           
-          <p className="text-xl text-foreground/80 max-w-4xl mx-auto leading-relaxed">
-            See what our users are saying about DimenXioner. Real stories from real people who have transformed their creative workflow.
+          <p className="text-xl text-foreground/70 max-w-4xl mx-auto leading-relaxed">
+            See what our users are saying about NexodusAI. Real stories from real people who have transformed their creative workflow.
           </p>
         </motion.div>
         

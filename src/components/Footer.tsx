@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Github, Twitter, Linkedin, Mail } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { Logo } from "./Logo";
 
 export const Footer = () => {
   const socialLinks = [
@@ -90,23 +92,15 @@ export const Footer = () => {
           >
             <motion.div 
               className="flex items-center space-x-2 mb-6"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
             >
-              <motion.div 
-                className="w-8 h-8 bg-gradient-neural rounded-lg neon-glow"
-                animate={{ 
-                  rotate: [0, 360],
-                  scale: [1, 1.1, 1]
-                }}
-                transition={{ 
-                  rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-                  scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-                }}
-              />
-              <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                DimenXioner
-              </span>
+              <Logo size="lg" />
+              <Link to="/" className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                NexodusAI
+              </Link>
             </motion.div>
             <p className="text-foreground/70 mb-6 max-w-sm">
               Advanced AI-powered 2D to 3D conversion tool. Transform your images into stunning 3D models 
@@ -179,8 +173,8 @@ export const Footer = () => {
           transition={{ delay: 0.5, duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <p className="text-foreground/60 text-sm">
-            © 2024 DimenXioner. All rights reserved.
+          <p className="text-foreground/50 text-sm">
+            © 2024 NexodusAI. All rights reserved.
           </p>
           <motion.p 
             className="text-foreground/60 text-sm mt-4 md:mt-0"
