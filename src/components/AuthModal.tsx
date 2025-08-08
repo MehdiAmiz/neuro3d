@@ -191,7 +191,7 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
 
           {/* Modal */}
           <motion.div
-            className="relative w-full max-w-md bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 mx-auto"
+            className="relative w-full max-w-md bg-card/95 backdrop-blur-xl border border-white/20 rounded-3xl p-8 mx-auto"
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
