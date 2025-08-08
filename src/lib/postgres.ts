@@ -5,7 +5,7 @@ const pool = new Pool({
   user: 'nexodusai',
   host: 'localhost',
   database: 'nexodusai',
-  password: '', // No password for local development
+  password: 'nexodusai123',
   port: 5432,
 });
 
