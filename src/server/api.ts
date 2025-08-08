@@ -186,6 +186,28 @@ router.get('/admin/users', async (req, res) => {
   }
 });
 
+router.delete('/admin/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleted = await userService.deleteUser(id);
+    
+    if (!deleted) {
+      return res.status(404).json({ 
+        success: false, 
+        error: 'User not found' 
+      });
+    }
+    
+    res.status(200).json({ success: true, message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Delete user error:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Failed to delete user' 
+    });
+  }
+});
+
 // Email validation endpoint
 router.post('/auth/check-email', async (req, res) => {
   try {

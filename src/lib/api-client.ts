@@ -107,6 +107,12 @@ class ApiClient {
     return this.request('/admin/users');
   }
 
+  async deleteUser(id: string) {
+    return this.request(`/admin/users/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
   // Health check
   async healthCheck() {
     return this.request('/health');
@@ -171,5 +177,10 @@ export const userService = {
   async getAllUsers() {
     const response = await apiClient.getAllUsers();
     return response.users;
+  },
+
+  async deleteUser(id: string) {
+    const response = await apiClient.deleteUser(id);
+    return response.success;
   },
 };
