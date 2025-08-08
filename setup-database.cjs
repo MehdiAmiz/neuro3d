@@ -2,12 +2,11 @@ const { Pool } = require('pg');
 const fs = require('fs');
 const path = require('path');
 
-// Database configuration with password
+// Database configuration
 const pool = new Pool({
   user: 'nexodusai',
   host: 'localhost',
   database: 'nexodusai',
-  password: 'nexodusai123',
   port: 5432,
 });
 
