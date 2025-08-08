@@ -3,7 +3,7 @@ import { Pool } from 'pg';
 // Database configuration
 const pool = new Pool({
   user: 'nexodusai',
-  host: 'localhost',
+  host: '127.0.0.1',
   database: 'nexodusai',
   port: 5432,
 });
