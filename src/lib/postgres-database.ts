@@ -98,7 +98,7 @@ export const userService = {
       email,
       name,
       password_hash,
-      credits: 10000,
+      credits: 0,
       is_admin: false,
     } as any);
     return sanitizeUser(created);
