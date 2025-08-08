@@ -1,5 +1,5 @@
 import express from 'express';
-import { userService } from '../lib/database';
+import { userService } from '../lib/postgres-database';
 
 const router = express.Router();
 

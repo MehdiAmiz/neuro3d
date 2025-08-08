@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import crypto from 'crypto';
 import apiRouter from './api';
+import postgresDb from '../lib/postgres-database';
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -171,11 +172,25 @@ app.post('/webhooks/shopify/order-paid', express.json(), handleShopifyPayment);
 // Handle payment success webhook (alternative endpoint)
 app.post('/api/shopify/payment-success', express.json(), handleShopifyPayment);
 
-app.listen(PORT, () => {
-  console.log(`🚀 Unified server is running on port ${PORT}`);
-  console.log(`📡 API Base URL: http://localhost:${PORT}/api`);
-  console.log(`🔗 Webhook URL: http://localhost:${PORT}/webhooks/shopify/order-paid`);
-  console.log(`💚 Health Check: http://localhost:${PORT}/health`);
-});
+// Initialize database and start server
+async function startServer() {
+  try {
+    // Initialize PostgreSQL database
+    await postgresDb.init();
+    console.log('✅ PostgreSQL database initialized');
+    
+    app.listen(PORT, () => {
+      console.log(`🚀 Unified server is running on port ${PORT}`);
+      console.log(`📡 API Base URL: http://localhost:${PORT}/api`);
+      console.log(`🔗 Webhook URL: http://localhost:${PORT}/webhooks/shopify/order-paid`);
+      console.log(`💚 Health Check: http://localhost:${PORT}/health`);
+    });
+  } catch (error) {
+    console.error('❌ Failed to start server:', error);
+    process.exit(1);
+  }
+}
+
+startServer();
 
 export default app;
