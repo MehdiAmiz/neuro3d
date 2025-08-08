@@ -1,5 +1,6 @@
 import pool from './postgres';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 
 export interface User {
   id: string;
@@ -12,12 +13,16 @@ export interface User {
   updated_at: Date;
 }
 
+function sanitizeUser(row: User) {
+  const { password_hash, ...rest } = row as any;
+  return rest;
+}
+
 export class PostgresDatabase {
   private pool = pool;
 
   async init(): Promise<void> {
     try {
-      // Test connection
       await this.pool.query('SELECT NOW()');
       console.log('PostgreSQL database connected successfully');
     } catch (error) {
@@ -28,27 +33,23 @@ export class PostgresDatabase {
 
   async createUser(userData: Omit<User, 'created_at' | 'updated_at'>): Promise<User> {
     const { id, email, name, password_hash, credits, is_admin } = userData;
-    
     const query = `
       INSERT INTO users (id, email, name, password_hash, credits, is_admin)
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
     `;
-    
     const values = [id, email, name, password_hash, credits, is_admin];
     const result = await this.pool.query(query, values);
     return result.rows[0];
   }
 
   async getUserById(id: string): Promise<User | null> {
-    const query = 'SELECT * FROM users WHERE id = $1';
-    const result = await this.pool.query(query, [id]);
+    const result = await this.pool.query('SELECT * FROM users WHERE id = $1', [id]);
     return result.rows[0] || null;
   }
 
   async getUserByEmail(email: string): Promise<User | null> {
-    const query = 'SELECT * FROM users WHERE email = $1';
-    const result = await this.pool.query(query, [email]);
+    const result = await this.pool.query('SELECT * FROM users WHERE email = $1', [email]);
     return result.rows[0] || null;
   }
 
@@ -58,27 +59,23 @@ export class PostgresDatabase {
 
     const setClause = fields.map((field, index) => `${field} = $${index + 2}`).join(', ');
     const query = `UPDATE users SET ${setClause} WHERE id = $1 RETURNING *`;
-    
-    const values = [id, ...fields.map(field => updates[field as keyof User])];
+    const values = [id, ...fields.map(field => (updates as any)[field])];
     const result = await this.pool.query(query, values);
     return result.rows[0] || null;
   }
 
   async updateUserCredits(id: string, credits: number): Promise<User | null> {
-    const query = 'UPDATE users SET credits = $2 WHERE id = $1 RETURNING *';
-    const result = await this.pool.query(query, [id, credits]);
+    const result = await this.pool.query('UPDATE users SET credits = $2 WHERE id = $1 RETURNING *', [id, credits]);
     return result.rows[0] || null;
   }
 
   async getAllUsers(): Promise<User[]> {
-    const query = 'SELECT * FROM users ORDER BY created_at DESC';
-    const result = await this.pool.query(query);
+    const result = await this.pool.query('SELECT * FROM users ORDER BY created_at DESC');
     return result.rows;
   }
 
   async deleteUser(id: string): Promise<boolean> {
-    const query = 'DELETE FROM users WHERE id = $1';
-    const result = await this.pool.query(query, [id]);
+    const result = await this.pool.query('DELETE FROM users WHERE id = $1', [id]);
     return result.rowCount > 0;
   }
 
@@ -87,51 +84,91 @@ export class PostgresDatabase {
   }
 }
 
-// Create singleton instance
 const postgresDb = new PostgresDatabase();
 
-// User service functions
 export const userService = {
-  async createUser(email: string, name: string, password: string): Promise<User> {
+  async register({ name, email, password }: { name: string; email: string; password: string }) {
+    const existing = await postgresDb.getUserByEmail(email);
+    if (existing) throw new Error('User with this email already exists');
+
     const id = crypto.randomUUID();
     const password_hash = await bcrypt.hash(password, 10);
-    
-    return postgresDb.createUser({
+    const created = await postgresDb.createUser({
       id,
       email,
       name,
       password_hash,
       credits: 10000,
-      is_admin: false
-    });
+      is_admin: false,
+    } as any);
+    return sanitizeUser(created);
   },
 
-  async getUserById(id: string): Promise<User | null> {
-    return postgresDb.getUserById(id);
+  async login(email: string, password: string) {
+    const user = await postgresDb.getUserByEmail(email);
+    if (!user) throw new Error('Invalid credentials');
+    const ok = await bcrypt.compare(password, user.password_hash);
+    if (!ok) throw new Error('Invalid credentials');
+    return sanitizeUser(user);
   },
 
-  async getUserByEmail(email: string): Promise<User | null> {
-    return postgresDb.getUserByEmail(email);
+  async getUserById(id: string) {
+    const user = await postgresDb.getUserById(id);
+    if (!user) throw new Error('User not found');
+    return sanitizeUser(user);
   },
 
-  async updateUser(id: string, updates: Partial<User>): Promise<User | null> {
-    return postgresDb.updateUser(id, updates);
+  async getUserByEmail(email: string) {
+    const user = await postgresDb.getUserByEmail(email);
+    return user ? sanitizeUser(user) : null;
   },
 
-  async updateUserCredits(id: string, credits: number): Promise<User | null> {
-    return postgresDb.updateUserCredits(id, credits);
+  async updateUser(id: string, updates: Partial<User>) {
+    const updated = await postgresDb.updateUser(id, updates);
+    if (!updated) throw new Error('User not found');
+    return sanitizeUser(updated);
   },
 
-  async getAllUsers(): Promise<User[]> {
-    return postgresDb.getAllUsers();
+  async updateCredits(id: string, credits: number) {
+    const updated = await postgresDb.updateUserCredits(id, credits);
+    if (!updated) throw new Error('User not found');
+    return sanitizeUser(updated);
   },
 
-  async deleteUser(id: string): Promise<boolean> {
+  async deductVideoCredits(id: string) {
+    const user = await postgresDb.getUserById(id);
+    if (!user) throw new Error('User not found');
+    if (user.credits < 50) throw new Error('Insufficient credits. You need 50 credits to generate a video.');
+    const updated = await postgresDb.updateUserCredits(id, user.credits - 50);
+    if (!updated) throw new Error('Failed to deduct credits');
+    return sanitizeUser(updated);
+  },
+
+  async deduct3DModelCredits(id: string) {
+    const user = await postgresDb.getUserById(id);
+    if (!user) throw new Error('User not found');
+    if (user.credits < 50) throw new Error('Insufficient credits. You need 50 credits to generate a 3D model.');
+    const updated = await postgresDb.updateUserCredits(id, user.credits - 50);
+    if (!updated) throw new Error('Failed to deduct credits');
+    return sanitizeUser(updated);
+  },
+
+  async getAllUsers() {
+    const users = await postgresDb.getAllUsers();
+    return users.map(sanitizeUser);
+  },
+
+  async deleteUser(id: string) {
     return postgresDb.deleteUser(id);
   },
 
-  async verifyPassword(user: User, password: string): Promise<boolean> {
+  async verifyPassword(user: User, password: string) {
     return bcrypt.compare(password, user.password_hash);
+  },
+
+  async checkEmailExists(email: string) {
+    const res = await pool.query('SELECT 1 FROM users WHERE email = $1 LIMIT 1', [email]);
+    return res.rowCount > 0;
   }
 };
 
