@@ -17,8 +17,10 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
   const location = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
   
-  // Check if we're on the App page
+  // Check if we're on the App page or Profile page
   const isOnAppPage = isAppPage || location.pathname === '/app';
+  const isOnProfilePage = location.pathname === '/profile';
+  const shouldShowMobileMenu = !isOnAppPage || isOnProfilePage;
 
   const handleLogout = () => {
     logout();
@@ -158,7 +160,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
           </div>
 
           {/* Mobile Menu Button */}
-          {!isOnAppPage && (
+          {shouldShowMobileMenu && (
             <motion.button
               className="md:hidden glass-card p-2 rounded-lg"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -193,7 +195,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
         </div>
 
         {/* Mobile Navigation */}
-        {!isOnAppPage && (
+        {shouldShowMobileMenu && (
           <AnimatePresence>
             {isMenuOpen && (
               <motion.nav 
@@ -204,7 +206,8 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                 transition={{ duration: 0.3, ease: "easeInOut" }}
               >
                 <div className="flex flex-col space-y-4 pt-4 px-4">
-                  {[
+                  {/* Show navigation links only on non-App pages */}
+                  {!isOnAppPage && [
                     { href: "#hero", label: "Home", isLink: false },
                     { href: "/app", label: "App", isLink: true },
                     { href: "#features", label: "Features", isLink: false },
@@ -236,6 +239,30 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                       </motion.a>
                     )
                   ))}
+                  
+                  {/* Show page-specific navigation for App and Profile pages */}
+                  {isOnAppPage && (
+                    <div className="space-y-2">
+                      <Link to="/" className="text-foreground/80 hover:text-primary transition-colors py-2 block">
+                        ← Back to Home
+                      </Link>
+                      <Link to="/profile" className="text-foreground/80 hover:text-primary transition-colors py-2 block">
+                        Profile
+                      </Link>
+                    </div>
+                  )}
+                  
+                  {isOnProfilePage && (
+                    <div className="space-y-2">
+                      <Link to="/" className="text-foreground/80 hover:text-primary transition-colors py-2 block">
+                        ← Back to Home
+                      </Link>
+                      <Link to="/app" className="text-foreground/80 hover:text-primary transition-colors py-2 block">
+                        App
+                      </Link>
+                    </div>
+                  )}
+                  
                   <div className="flex flex-col space-y-2 pt-4">
                     {isAuthenticated ? (
                       <>
@@ -278,9 +305,11 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                         Sign In
                       </Button>
                     )}
-                    <Link to="/app" onClick={() => setIsMenuOpen(false)}>
-                      <Button variant="neural" className="glass-card neon-glow w-full">Start Converting</Button>
-                    </Link>
+                    {!isOnAppPage && (
+                      <Link to="/app" onClick={() => setIsMenuOpen(false)}>
+                        <Button variant="neural" className="glass-card neon-glow w-full">Start Converting</Button>
+                      </Link>
+                    )}
                   </div>
                 </div>
               </motion.nav>
