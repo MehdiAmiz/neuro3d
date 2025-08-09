@@ -196,7 +196,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
               >
-                <div className="flex flex-col space-y-4 pt-4 px-4">
+                <div className="flex flex-col space-y-4 pt-4 px-4 items-center">
                   {/* Show full navigation only on homepage */}
                   {!isOnAppPage && !isOnProfilePage && [
                     { href: "#hero", label: "Home", isLink: false },
@@ -211,7 +211,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                       <Link
                         key={link.href}
                         to={link.href}
-                        className="text-white hover:text-blue-300 transition-colors py-2 font-medium"
+                        className="text-white hover:text-blue-300 transition-colors py-2 font-medium block text-center"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         {link.label}
@@ -220,7 +220,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                       <motion.a 
                         key={link.href}
                         href={link.href} 
-                        className="text-white hover:text-blue-300 transition-colors py-2 font-medium"
+                        className="text-white hover:text-blue-300 transition-colors py-2 font-medium block text-center"
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1, duration: 0.3 }}
@@ -233,10 +233,10 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                   
                   {/* Simplified menu for App and Profile pages */}
                   {(isOnAppPage || isOnProfilePage) && (
-                    <div className="space-y-3">
+                    <div className="space-y-3 w-full">
                       <Link 
                         to="/" 
-                        className="flex items-center space-x-3 text-white hover:text-blue-300 transition-colors py-3 font-medium"
+                        className="flex items-center justify-center space-x-3 text-white hover:text-blue-300 transition-colors py-3 font-medium"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         <Home className="w-5 h-5" />
@@ -246,7 +246,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                       {isOnAppPage ? (
                         <Link 
                           to="/profile" 
-                          className="flex items-center space-x-3 text-white hover:text-blue-300 transition-colors py-3 font-medium"
+                          className="flex items-center justify-center space-x-3 text-white hover:text-blue-300 transition-colors py-3 font-medium"
                           onClick={() => setIsMenuOpen(false)}
                         >
                           <User className="w-5 h-5" />
@@ -255,7 +255,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                       ) : (
                         <Link 
                           to="/app" 
-                          className="flex items-center space-x-3 text-white hover:text-blue-300 transition-colors py-3 font-medium"
+                          className="flex items-center justify-center space-x-3 text-white hover:text-blue-300 transition-colors py-3 font-medium"
                           onClick={() => setIsMenuOpen(false)}
                         >
                           <AppWindow className="w-5 h-5" />
@@ -266,7 +266,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                       {isAuthenticated ? (
                         <Button 
                           variant="ghost" 
-                          className="flex items-center space-x-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 w-full justify-start"
+                          className="flex items-center justify-center space-x-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 w-full"
                           onClick={() => {
                             handleLogout();
                             setIsMenuOpen(false);
@@ -278,7 +278,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                       ) : (
                         <Button 
                           variant="ghost" 
-                          className="flex items-center space-x-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 w-full justify-start"
+                          className="flex items-center justify-center space-x-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 w-full"
                           onClick={() => {
                             setIsAuthModalOpen(true);
                             setIsMenuOpen(false);
