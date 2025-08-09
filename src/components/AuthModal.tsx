@@ -223,17 +223,15 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 min-h-screen overflow-y-auto"
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 min-h-screen overflow-y-auto md:items-center items-start md:pt-4 pt-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={handleBackdropClick}
           style={{ 
             display: 'flex',
-            alignItems: 'flex-start',
             justifyContent: 'center',
             minHeight: '100vh',
-            paddingTop: '1rem',
             paddingBottom: '1rem'
           }}
         >
@@ -316,7 +314,7 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
             </AnimatePresence>
 
             {/* Header */}
-            <div className="text-center mb-8 hidden md:block">
+            <div className="text-center mb-8">
               <motion.div
                 className="w-16 h-16 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-2xl mx-auto mb-4 flex items-center justify-center"
                 initial={{ scale: 0, rotate: -180 }}
@@ -325,12 +323,14 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               >
                 <User className="w-8 h-8 text-white" />
               </motion.div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">
-                Welcome to NexodusAI
-              </h2>
-              <p className="text-foreground/60">
-                {activeTab === 'signin' ? 'Sign in to your account' : 'Create your account'}
-              </p>
+              <div className="hidden md:block">
+                <h2 className="text-2xl font-bold text-foreground mb-2">
+                  Welcome to NexodusAI
+                </h2>
+                <p className="text-foreground/60">
+                  {activeTab === 'signin' ? 'Sign in to your account' : 'Create your account'}
+                </p>
+              </div>
             </div>
 
             {/* Error Message */}
