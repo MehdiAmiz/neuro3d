@@ -228,7 +228,7 @@ const Profile: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header isAppPage={true} />
+      <Header />
       
       <div className="container mx-auto px-4 py-8 pt-24">
         <motion.div
