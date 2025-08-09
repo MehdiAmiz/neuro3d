@@ -156,9 +156,9 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
               <Link to="/app">
                 <Button 
                   variant="ghost" 
-                  className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-500 hover:from-blue-500 hover:via-purple-500 hover:to-cyan-400 text-white border-0 px-6 py-3 rounded-2xl font-semibold shadow-2xl shadow-blue-500/40 backdrop-blur-xl transition-all duration-500 hover:shadow-blue-500/60 hover:scale-105 hover:-translate-y-1 group"
+                  className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white border-0 px-6 py-3 rounded-2xl font-semibold shadow-2xl shadow-blue-500/40 backdrop-blur-xl transition-all duration-500 hover:shadow-blue-500/60 hover:scale-105 hover:-translate-y-1 group"
                   style={{
-                    background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 25%, #06b6d4 50%, #6366f1 75%, #8b5cf6 100%)',
+                    background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
                     boxShadow: '0 8px 32px rgba(59, 130, 246, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)'
                   }}
                 >
