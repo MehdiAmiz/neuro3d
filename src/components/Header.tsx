@@ -30,7 +30,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
 
   return (
     <motion.header 
-      className="fixed top-0 w-full z-50 md:glass md:border-b md:border-white/20"
+      className="fixed top-0 w-full z-50"
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
