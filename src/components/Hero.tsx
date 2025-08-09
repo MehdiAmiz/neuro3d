@@ -1,14 +1,20 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Sparkles, Upload, Download, CreditCard } from "lucide-react";
+import { ArrowRight, Sparkles, Upload, CreditCard, Coins } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-3d-transformation.jpg";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 export const Hero = () => {
   const ref = useRef(null);
   const [isCreditsOpen, setIsCreditsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { user } = useAuth();
+  const { toast } = useToast();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"]
@@ -291,43 +297,88 @@ export const Hero = () => {
 
       {/* Get Credits Dialog */}
       <Dialog open={isCreditsOpen} onOpenChange={setIsCreditsOpen}>
-        <DialogContent className="sm:max-w-[460px] bg-card/95 backdrop-blur-xl">
+        <DialogContent className="glass-card max-w-md">
           <DialogHeader>
-            <DialogTitle>Buy Credits</DialogTitle>
-            <DialogDescription>
-              Choose a credits pack and proceed to checkout to power your 2D → 3D conversions.
+            <DialogTitle className="text-xl text-foreground">Buy Credits</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
+              Choose a credit package to continue using our services.
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between p-3 rounded-lg border border-white/10 bg-white/5">
-              <div>
-                <div className="font-semibold">Starter</div>
-                <div className="text-sm text-foreground/70">100 credits</div>
+          <div className="space-y-4">
+            {[
+              { 
+                name: "Starter",
+                credits: 3000, 
+                price: 14, 
+                popular: false,
+                shopifyId: '42665373925454'
+              },
+              { 
+                name: "Professional",
+                credits: 5000, 
+                price: 20, 
+                popular: true,
+                shopifyId: '42665410035790'
+              },
+              { 
+                name: "Enterprise",
+                credits: 20000, 
+                price: 50, 
+                popular: false,
+                shopifyId: '42665416851534'
+              }
+            ].map((pkg, index) => (
+              <div
+                key={index}
+                className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                  pkg.popular 
+                    ? 'border-purple-500 bg-purple-500/10' 
+                    : 'border-white/20 bg-white/5 hover:border-white/40'
+                }`}
+                onClick={async () => {
+                  if (!user || !user.email) {
+                    toast({
+                      title: "Please sign in",
+                      description: "Log in to purchase credits.",
+                      variant: "destructive"
+                    });
+                    return;
+                  }
+                  try {
+                    setIsLoading(true);
+                    const checkoutUrl = `https://neuro3d.myshopify.com/cart/${pkg.shopifyId}:1?attributes[userId]=${user.id}&attributes[credits]=${pkg.credits}`;
+                    window.location.href = checkoutUrl;
+                  } catch (err) {
+                    console.error('Error creating checkout:', err);
+                    toast({ title: 'Error', description: 'Failed to create checkout. Please try again.', variant: 'destructive' });
+                  } finally {
+                    setIsLoading(false);
+                  }
+                }}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="flex items-center space-x-2">
+                      <span className="text-foreground font-semibold">{pkg.name} Pack</span>
+                      {pkg.popular && (
+                        <Badge className="bg-purple-600 text-white text-xs">Popular</Badge>
+                      )}
+                    </div>
+                    <p className="text-muted-foreground text-sm">${pkg.price} - {pkg.credits.toLocaleString()} Credits</p>
+                  </div>
+                  <Coins className="h-6 w-6 text-yellow-400" />
+                </div>
               </div>
-              <div className="font-semibold">$9</div>
-            </div>
-            <div className="flex items-center justify-between p-3 rounded-lg border border-white/10 bg-white/5">
-              <div>
-                <div className="font-semibold">Pro</div>
-                <div className="text-sm text-foreground/70">500 credits</div>
-              </div>
-              <div className="font-semibold">$39</div>
-            </div>
-            <div className="flex items-center justify-between p-3 rounded-lg border border-white/10 bg-white/5">
-              <div>
-                <div className="font-semibold">Enterprise</div>
-                <div className="text-sm text-foreground/70">2000 credits</div>
-              </div>
-              <div className="font-semibold">$129</div>
-            </div>
+            ))}
+            <Button 
+              variant="outline" 
+              onClick={() => setIsCreditsOpen(false)}
+              className="w-full glass-card"
+              disabled={isLoading}
+            >
+              Cancel
+            </Button>
           </div>
-          <DialogFooter>
-            <Link to="/checkout" onClick={() => setIsCreditsOpen(false)}>
-              <Button className="w-full">
-                Proceed to Checkout
-              </Button>
-            </Link>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
     </motion.section>
