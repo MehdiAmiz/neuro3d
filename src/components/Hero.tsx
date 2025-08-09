@@ -93,7 +93,7 @@ export const Hero = () => {
             </motion.div>
             
             <motion.h1 
-              className="text-4xl lg:text-6xl font-display font-bold mb-6 leading-tight"
+              className="text-5xl lg:text-6xl font-display font-bold mb-6 leading-tight"
               variants={itemVariants}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
