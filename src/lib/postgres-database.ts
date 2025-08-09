@@ -433,12 +433,16 @@ export const userService = {
   async upsertGoogleUser(params: { googleId: string; email: string; name: string; avatarUrl?: string | null; emailVerified?: boolean | null }) {
     const existingByGoogle = await postgresDb.getUserByGoogleId(params.googleId);
     if (existingByGoogle) {
-      const updated = await postgresDb.updateUser(existingByGoogle.id, {
-        email: params.email || existingByGoogle.email,
-        name: params.name || existingByGoogle.name,
-        avatar_url: params.avatarUrl ?? existingByGoogle.avatar_url ?? null,
-        email_verified: params.emailVerified ?? existingByGoogle.email_verified ?? false,
-      } as any);
+      // Don't overwrite user's chosen name/email on subsequent Google logins
+      const partialUpdates: Partial<User> = {
+        avatar_url: (params.avatarUrl ?? existingByGoogle.avatar_url) as any,
+        email_verified: (params.emailVerified ?? existingByGoogle.email_verified ?? false) as any,
+      };
+      // Only set email/name if missing in DB
+      if (!existingByGoogle.email && params.email) (partialUpdates as any).email = params.email;
+      if (!existingByGoogle.name && params.name) (partialUpdates as any).name = params.name;
+
+      const updated = await postgresDb.updateUser(existingByGoogle.id, partialUpdates as any);
       if (!updated) throw new Error('Failed to update user');
       return sanitizeUser(updated);
     }
@@ -446,10 +450,11 @@ export const userService = {
     // Try by email to link existing password-based account
     const existingByEmail = await postgresDb.getUserByEmail(params.email);
     if (existingByEmail) {
+      // Link Google account but preserve user's chosen name/email
       const linked = await postgresDb.updateUser(existingByEmail.id, {
         google_id: params.googleId,
-        avatar_url: params.avatarUrl ?? existingByEmail.avatar_url ?? null,
-        email_verified: params.emailVerified ?? existingByEmail.email_verified ?? false,
+        avatar_url: (params.avatarUrl ?? existingByEmail.avatar_url) as any,
+        email_verified: (params.emailVerified ?? existingByEmail.email_verified ?? false) as any,
       } as any);
       if (!linked) throw new Error('Failed to link Google account');
       return sanitizeUser(linked);

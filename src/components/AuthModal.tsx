@@ -196,7 +196,8 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                 console.log('Google ID token received, calling loginWithGoogle...');
                 await loginWithGoogle(idToken);
                 setIsSuccess(true);
-                setTimeout(() => onClose(), 800);
+                // Force refresh of the user in context from backend right after Google login
+                window.location.reload();
                 resolve();
               } catch (e) {
                 console.error('Error in Google callback:', e);
