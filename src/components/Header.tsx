@@ -44,7 +44,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
     <motion.header 
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-lg' 
+          ? 'bg-white/20 backdrop-blur-2xl border-b border-white/30 shadow-2xl shadow-black/20' 
           : 'bg-transparent'
       }`}
       initial={{ y: -100, opacity: 0 }}
