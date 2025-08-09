@@ -316,7 +316,7 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
             </AnimatePresence>
 
             {/* Header */}
-            <div className="text-center mb-8">
+            <div className="text-center mb-8 hidden md:block">
               <motion.div
                 className="w-16 h-16 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-2xl mx-auto mb-4 flex items-center justify-center"
                 initial={{ scale: 0, rotate: -180 }}
