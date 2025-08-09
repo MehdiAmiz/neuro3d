@@ -1,4 +1,5 @@
 import express from 'express';
+import { OAuth2Client } from 'google-auth-library';
 import { userService } from '../lib/postgres-database';
 
 const router = express.Router();
@@ -53,6 +54,41 @@ router.post('/auth/login', async (req, res) => {
       success: false, 
       error: error instanceof Error ? error.message : 'Invalid credentials' 
     });
+  }
+});
+
+// Google Sign-In with ID token (Option A)
+router.post('/auth/google', async (req, res) => {
+  try {
+    const { idToken } = req.body as { idToken?: string };
+    if (!idToken) {
+      return res.status(400).json({ success: false, error: 'idToken is required' });
+    }
+
+    const clientId = process.env.GOOGLE_CLIENT_ID || process.env.VITE_GOOGLE_CLIENT_ID;
+    if (!clientId) {
+      return res.status(500).json({ success: false, error: 'Google client ID not configured' });
+    }
+
+    const oauthClient = new OAuth2Client(clientId);
+    const ticket = await oauthClient.verifyIdToken({ idToken, audience: clientId });
+    const payload = ticket.getPayload();
+    if (!payload || !payload.sub || !payload.email) {
+      return res.status(401).json({ success: false, error: 'Invalid Google token' });
+    }
+
+    const user = await userService.upsertGoogleUser({
+      googleId: payload.sub,
+      email: payload.email,
+      name: payload.name || payload.email.split('@')[0],
+      avatarUrl: payload.picture || null,
+      emailVerified: payload.email_verified ?? null,
+    });
+
+    return res.status(200).json({ success: true, user });
+  } catch (error) {
+    console.error('Google auth error:', error);
+    return res.status(401).json({ success: false, error: 'Google authentication failed' });
   }
 });
 

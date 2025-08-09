@@ -57,6 +57,13 @@ class ApiClient {
     });
   }
 
+  async loginWithGoogle(idToken: string) {
+    return this.request('/auth/google', {
+      method: 'POST',
+      body: JSON.stringify({ idToken }),
+    });
+  }
+
   async checkEmailExists(email: string) {
     return this.request<{ exists: boolean }>('/auth/check-email', {
       method: 'POST',
@@ -140,6 +147,11 @@ export const userService = {
 
   async login(email: string, password: string) {
     const response = await apiClient.login(email, password);
+    return response.user;
+  },
+
+  async loginWithGoogle(idToken: string) {
+    const response = await apiClient.loginWithGoogle(idToken);
     return response.user;
   },
 

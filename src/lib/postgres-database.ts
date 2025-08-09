@@ -6,11 +6,14 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  password_hash: string;
+  password_hash: string | null;
   credits: number;
   is_admin: boolean;
   created_at: Date;
   updated_at: Date;
+  google_id?: string | null;
+  avatar_url?: string | null;
+  email_verified?: boolean | null;
 }
 
 function sanitizeUser(row: User) {
@@ -32,13 +35,13 @@ export class PostgresDatabase {
   }
 
   async createUser(userData: Omit<User, 'created_at' | 'updated_at'>): Promise<User> {
-    const { id, email, name, password_hash, credits, is_admin } = userData;
+    const { id, email, name, password_hash, credits, is_admin, google_id, avatar_url, email_verified } = userData as any;
     const query = `
-      INSERT INTO users (id, email, name, password_hash, credits, is_admin)
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO users (id, email, name, password_hash, credits, is_admin, google_id, avatar_url, email_verified)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING *
     `;
-    const values = [id, email, name, password_hash, credits, is_admin];
+    const values = [id, email, name, password_hash, credits, is_admin, google_id || null, avatar_url || null, email_verified ?? false];
     const result = await this.pool.query(query, values);
     return result.rows[0];
   }
@@ -50,6 +53,11 @@ export class PostgresDatabase {
 
   async getUserByEmail(email: string): Promise<User | null> {
     const result = await this.pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    return result.rows[0] || null;
+  }
+
+  async getUserByGoogleId(googleId: string): Promise<User | null> {
+    const result = await this.pool.query('SELECT * FROM users WHERE google_id = $1', [googleId]);
     return result.rows[0] || null;
   }
 
@@ -359,6 +367,11 @@ export const userService = {
     return user ? sanitizeUser(user) : null;
   },
 
+  async getUserByGoogleId(googleId: string) {
+    const user = await postgresDb.getUserByGoogleId(googleId);
+    return user ? sanitizeUser(user) : null;
+  },
+
   async updateUser(id: string, updates: Partial<User>) {
     const updated = await postgresDb.updateUser(id, updates);
     if (!updated) throw new Error('User not found');
@@ -413,6 +426,47 @@ export const userService = {
   async checkEmailExists(email: string) {
     const res = await pool.query('SELECT 1 FROM users WHERE email = $1 LIMIT 1', [email]);
     return res.rowCount > 0;
+  },
+
+  async upsertGoogleUser(params: { googleId: string; email: string; name: string; avatarUrl?: string | null; emailVerified?: boolean | null }) {
+    const existingByGoogle = await postgresDb.getUserByGoogleId(params.googleId);
+    if (existingByGoogle) {
+      const updated = await postgresDb.updateUser(existingByGoogle.id, {
+        email: params.email || existingByGoogle.email,
+        name: params.name || existingByGoogle.name,
+        avatar_url: params.avatarUrl ?? existingByGoogle.avatar_url ?? null,
+        email_verified: params.emailVerified ?? existingByGoogle.email_verified ?? false,
+      } as any);
+      if (!updated) throw new Error('Failed to update user');
+      return sanitizeUser(updated);
+    }
+
+    // Try by email to link existing password-based account
+    const existingByEmail = await postgresDb.getUserByEmail(params.email);
+    if (existingByEmail) {
+      const linked = await postgresDb.updateUser(existingByEmail.id, {
+        google_id: params.googleId,
+        avatar_url: params.avatarUrl ?? existingByEmail.avatar_url ?? null,
+        email_verified: params.emailVerified ?? existingByEmail.email_verified ?? false,
+      } as any);
+      if (!linked) throw new Error('Failed to link Google account');
+      return sanitizeUser(linked);
+    }
+
+    // Create new user with 0 credits, no password
+    const id = crypto.randomUUID();
+    const created = await postgresDb.createUser({
+      id,
+      email: params.email,
+      name: params.name,
+      password_hash: null,
+      credits: 0,
+      is_admin: false,
+      google_id: params.googleId,
+      avatar_url: params.avatarUrl ?? null,
+      email_verified: params.emailVerified ?? false,
+    } as any);
+    return sanitizeUser(created);
   }
 };
 

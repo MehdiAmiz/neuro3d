@@ -26,7 +26,7 @@ interface FormErrors {
 }
 
 export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
-  const { login, register } = useAuth();
+  const { login, register, loginWithGoogle } = useAuth();
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>('signin');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -163,6 +163,47 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     const baseClasses = "pl-10 bg-white/5 border-white/20 text-foreground placeholder:text-foreground/40 focus:border-blue-500";
     const errorClasses = "border-red-500 focus:border-red-500";
     return `${baseClasses} ${formErrors[field] ? errorClasses : ''}`;
+  };
+
+  // Google One Tap / Button handler using Google Identity Services
+  const handleGoogleSignIn = async () => {
+    try {
+      setIsLoading(true);
+      // Ensure Google script has been loaded
+      const { google } = window as any;
+      if (!google || !google.accounts || !google.accounts.id) {
+        throw new Error('Google Identity not loaded');
+      }
+
+      // Use the prompt flow via button click
+      await new Promise<void>((resolve, reject) => {
+        try {
+          google.accounts.id.initialize({
+            client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+            callback: async (response: any) => {
+              try {
+                const idToken = response.credential;
+                if (!idToken) throw new Error('No credential returned');
+                await loginWithGoogle(idToken);
+                setIsSuccess(true);
+                setTimeout(() => onClose(), 800);
+                resolve();
+              } catch (e) {
+                reject(e);
+              }
+            },
+          });
+          // Show native prompt
+          google.accounts.id.prompt();
+        } catch (e) {
+          reject(e);
+        }
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Google sign-in failed');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -444,6 +485,24 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                 )}
               </Button>
             </form>
+
+            {/* Or divider */}
+            <div className="flex items-center my-4">
+              <div className="flex-1 h-px bg-white/10" />
+              <span className="px-3 text-xs text-foreground/50">OR</span>
+              <div className="flex-1 h-px bg-white/10" />
+            </div>
+
+            {/* Google Sign-In */}
+            <Button
+              type="button"
+              onClick={handleGoogleSignIn}
+              className="w-full bg-white text-black py-3 rounded-xl font-semibold hover:opacity-90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isLoading}
+              variant="secondary"
+            >
+              Continue with Google
+            </Button>
 
             {/* Footer */}
             <div className="mt-6 text-center text-sm text-foreground/60">

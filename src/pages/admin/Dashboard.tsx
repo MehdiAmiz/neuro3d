@@ -240,7 +240,7 @@ export const AdminDashboard = () => {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Dashboard Overview</h1>
+        <h1 className="text-3xl font-bold">Dashboard Overview</h1>
           <p className="text-foreground/70 mt-2">
             Real-time analytics and insights from your database
           </p>
