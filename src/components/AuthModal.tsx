@@ -274,13 +274,14 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                 <motion.div
                   className="absolute inset-0 rounded-3xl flex items-center justify-center"
                   style={{ 
-                    background: 'linear-gradient(135deg, #22c55e 0%, #10b981 100%)',
+                    background: 'linear-gradient(135deg, #00ff88 0%, #00d4aa 25%, #00b8cc 50%, #009cee 75%, #0080ff 100%)',
                     zIndex: 9999,
                     position: 'absolute',
                     top: 0,
                     left: 0,
                     right: 0,
-                    bottom: 0
+                    bottom: 0,
+                    boxShadow: 'inset 0 0 50px rgba(0, 255, 136, 0.3), 0 0 50px rgba(0, 255, 136, 0.2)'
                   }}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -288,17 +289,20 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                 >
                   <div className="text-center">
                     <motion.div
-                      className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4"
+                      className="w-20 h-20 bg-gradient-to-br from-cyan-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl"
+                      style={{
+                        boxShadow: '0 0 30px rgba(0, 255, 136, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.1)'
+                      }}
                       initial={{ scale: 0, rotate: -180 }}
                       animate={{ scale: 1, rotate: 0 }}
                       transition={{ delay: 0.2, duration: 0.6, type: "spring" }}
                     >
-                      <CheckCircle className="w-10 h-10 text-white" />
+                      <CheckCircle className="w-10 h-10 text-white drop-shadow-lg" />
                     </motion.div>
-                    <h3 className="text-2xl font-bold text-white mb-2">
+                    <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">
                       {activeTab === 'signup' ? 'Account Created!' : 'Welcome Back!'}
                     </h3>
-                    <p className="text-white/90">
+                    <p className="text-white/95 font-medium">
                       {activeTab === 'signup' 
                         ? 'Your account has been successfully created.' 
                         : 'You have been successfully signed in.'
