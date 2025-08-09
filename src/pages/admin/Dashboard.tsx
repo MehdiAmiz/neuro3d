@@ -265,6 +265,47 @@ export const AdminDashboard = () => {
         ))}
       </div>
 
+      {/* Sales Summary Card */}
+      <div className="mb-8">
+        <Card className="relative overflow-hidden border-2 border-green-500/20">
+          <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-emerald-500/10" />
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center gap-3 text-2xl">
+              <CreditCard className="w-8 h-8 text-green-500" />
+              Sales Summary
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-green-600 mb-2">
+                  {formatCurrency(analytics.shopify.totalRevenue)}
+                </div>
+                <div className="text-sm text-muted-foreground">Total Revenue</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-blue-600 mb-2">
+                  {formatNumber(analytics.shopify.totalOrders)}
+                </div>
+                <div className="text-sm text-muted-foreground">Total Orders</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-purple-600 mb-2">
+                  {formatCurrency(analytics.shopify.avgOrderValue)}
+                </div>
+                <div className="text-sm text-muted-foreground">Avg Order Value</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-orange-600 mb-2">
+                  {analytics.shopify.conversionRate}%
+                </div>
+                <div className="text-sm text-muted-foreground">Conversion Rate</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       {/* Main Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {stats.map((stat, index) => (

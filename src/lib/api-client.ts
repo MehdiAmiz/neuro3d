@@ -166,6 +166,11 @@ export const userService = {
     return response.user;
   },
 
+  async addCredits(id: string, creditsToAdd: number) {
+    const response = await apiClient.addCredits(id, creditsToAdd);
+    return response.user;
+  },
+
   async deductVideoCredits(id: string) {
     const response = await apiClient.deductVideoCredits(id);
     return response.user;

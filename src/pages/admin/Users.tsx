@@ -11,12 +11,20 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Search, MoreVertical, Edit, Trash, Plus, RefreshCw, AlertCircle } from "lucide-react";
+import { Search, MoreVertical, Edit, Trash, Plus, RefreshCw, AlertCircle, Save, X } from "lucide-react";
 import { userService } from "@/lib/api-client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -30,11 +38,21 @@ interface User {
   updated_at: string;
 }
 
+interface EditingUser {
+  id: string;
+  name: string;
+  email: string;
+  credits: number;
+  is_admin: boolean;
+}
+
 export const AdminUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [editingUser, setEditingUser] = useState<EditingUser | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const { toast } = useToast();
 
   // Fetch users from database
@@ -97,6 +115,58 @@ export const AdminUsers = () => {
         variant: "destructive"
       });
     }
+  };
+
+  const handleEditUser = (user: User) => {
+    setEditingUser({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      credits: user.credits,
+      is_admin: user.is_admin
+    });
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSaveUser = async () => {
+    if (!editingUser) return;
+
+    try {
+      // Update user data in the database
+      await userService.updateUser(editingUser.id, {
+        name: editingUser.name,
+        email: editingUser.email,
+        credits: editingUser.credits,
+        is_admin: editingUser.is_admin
+      });
+
+      // Update local state
+      setUsers(users.map(user => 
+        user.id === editingUser.id 
+          ? { ...user, ...editingUser }
+          : user
+      ));
+
+      setIsEditDialogOpen(false);
+      setEditingUser(null);
+
+      toast({
+        title: "User Updated",
+        description: "User information has been successfully updated."
+      });
+    } catch (error) {
+      console.error('Failed to update user:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update user. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditDialogOpen(false);
+    setEditingUser(null);
   };
 
   const filteredUsers = users.filter(user =>
@@ -213,7 +283,7 @@ export const AdminUsers = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleEditUser(user)}>
                             <Edit className="w-4 h-4 mr-2" />
                             Edit User
                           </DropdownMenuItem>
@@ -242,6 +312,84 @@ export const AdminUsers = () => {
           </Table>
         </div>
       </div>
+
+      {/* Edit User Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Edit User</DialogTitle>
+            <DialogDescription>
+              Update user information and credits. Click save when you're done.
+            </DialogDescription>
+          </DialogHeader>
+          {editingUser && (
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label htmlFor="name" className="text-right">
+                  Name
+                </label>
+                <Input
+                  id="name"
+                  value={editingUser.name}
+                  onChange={(e) => setEditingUser({ ...editingUser, name: e.target.value })}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label htmlFor="email" className="text-right">
+                  Email
+                </label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={editingUser.email}
+                  onChange={(e) => setEditingUser({ ...editingUser, email: e.target.value })}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label htmlFor="credits" className="text-right">
+                  Credits
+                </label>
+                <Input
+                  id="credits"
+                  type="number"
+                  value={editingUser.credits}
+                  onChange={(e) => setEditingUser({ ...editingUser, credits: parseInt(e.target.value) || 0 })}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label htmlFor="is_admin" className="text-right">
+                  Admin
+                </label>
+                <div className="col-span-3 flex items-center space-x-2">
+                  <input
+                    id="is_admin"
+                    type="checkbox"
+                    checked={editingUser.is_admin}
+                    onChange={(e) => setEditingUser({ ...editingUser, is_admin: e.target.checked })}
+                    className="rounded border-gray-300"
+                  />
+                  <label htmlFor="is_admin" className="text-sm">
+                    Grant admin privileges
+                  </label>
+                </div>
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={handleCancelEdit}>
+              <X className="w-4 h-4 mr-2" />
+              Cancel
+            </Button>
+            <Button onClick={handleSaveUser}>
+              <Save className="w-4 h-4 mr-2" />
+              Save Changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
