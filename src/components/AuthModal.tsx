@@ -223,7 +223,7 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 min-h-screen overflow-y-auto md:items-center items-start md:pt-4 pt-8"
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 min-h-screen overflow-y-auto md:items-center items-start md:pt-4 pt-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -245,7 +245,7 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
 
           {/* Modal */}
           <motion.div
-            className="relative w-full max-w-md bg-card/95 backdrop-blur-xl border border-white/20 rounded-3xl p-8 mx-auto my-8 max-h-[90vh] overflow-y-auto"
+            className="relative w-full max-w-md bg-card/95 backdrop-blur-xl border border-white/20 rounded-3xl p-8 mx-auto my-4 max-h-[90vh] overflow-y-auto"
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
