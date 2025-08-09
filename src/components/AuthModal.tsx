@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { X, Mail, Lock, User, Eye, EyeOff, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -27,6 +28,7 @@ interface FormErrors {
 
 export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   const { login, register, loginWithGoogle } = useAuth();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>('signin');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -132,12 +134,10 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
         // Sign in
         await login(formData.email, formData.password);
       }
-      
-      // Show success state
+      // Redirect to app after successful auth
       setIsSuccess(true);
-      setTimeout(() => {
-        onClose();
-      }, 2000);
+      onClose();
+      navigate('/app');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred. Please try again.');
     } finally {
@@ -193,11 +193,10 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                 const idToken = response.credential;
                 if (!idToken) throw new Error('No credential returned from Google');
                 
-                console.log('Google ID token received, calling loginWithGoogle...');
                 await loginWithGoogle(idToken);
                 setIsSuccess(true);
-                // Force refresh of the user in context from backend right after Google login
-                window.location.reload();
+                onClose();
+                navigate('/app');
                 resolve();
               } catch (e) {
                 console.error('Error in Google callback:', e);
