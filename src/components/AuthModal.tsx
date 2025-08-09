@@ -274,14 +274,14 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                 <motion.div
                   className="absolute inset-0 rounded-3xl flex items-center justify-center"
                   style={{ 
-                    background: 'linear-gradient(135deg, #00ff88 0%, #00d4aa 25%, #00b8cc 50%, #009cee 75%, #0080ff 100%)',
+                    background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 25%, #06b6d4 50%, #6366f1 75%, #8b5cf6 100%)',
                     zIndex: 9999,
                     position: 'absolute',
                     top: 0,
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    boxShadow: 'inset 0 0 50px rgba(0, 255, 136, 0.3), 0 0 50px rgba(0, 255, 136, 0.2)'
+                    boxShadow: 'inset 0 0 50px rgba(59, 130, 246, 0.3), 0 0 50px rgba(139, 92, 246, 0.2)'
                   }}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -289,9 +289,9 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                 >
                   <div className="text-center">
                     <motion.div
-                      className="w-20 h-20 bg-gradient-to-br from-cyan-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl"
+                      className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl"
                       style={{
-                        boxShadow: '0 0 30px rgba(0, 255, 136, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.1)'
+                        boxShadow: '0 0 30px rgba(59, 130, 246, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.1)'
                       }}
                       initial={{ scale: 0, rotate: -180 }}
                       animate={{ scale: 1, rotate: 0 }}
