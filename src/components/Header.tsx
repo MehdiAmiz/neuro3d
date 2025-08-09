@@ -190,13 +190,24 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
           <AnimatePresence>
             {isMenuOpen && (
               <motion.nav 
-                className="md:hidden mt-4 pb-4 rounded-xl border border-white/10 bg-gradient-to-br from-blue-600/95 via-purple-600/95 to-cyan-500/95 backdrop-blur shadow-xl shadow-blue-500/10"
+                className="md:hidden mt-4 pb-4 rounded-xl border border-white/10 bg-black/90 backdrop-blur-xl relative overflow-hidden"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(17, 17, 17, 0.95) 100%)',
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                }}
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
               >
-                <div className="flex flex-col space-y-4 pt-4 px-4 items-center">
+                <div 
+                  className="absolute inset-0 rounded-xl opacity-20"
+                  style={{
+                    background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 25%, #06b6d4 50%, #6366f1 75%, #8b5cf6 100%)',
+                    filter: 'blur(40px)'
+                  }}
+                />
+                <div className="relative z-10 flex flex-col space-y-4 pt-4 px-4 items-center">
                   {/* Show full navigation only on homepage */}
                   {!isOnAppPage && !isOnProfilePage && [
                     { href: "#hero", label: "Home", isLink: false },
