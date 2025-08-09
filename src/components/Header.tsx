@@ -243,14 +243,25 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                         <span>Home</span>
                       </Link>
                       
-                      <Link 
-                        to="/app" 
-                        className="flex items-center space-x-3 text-white hover:text-blue-300 transition-colors py-3 font-medium"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        <AppWindow className="w-5 h-5" />
-                        <span>App</span>
-                      </Link>
+                      {isOnAppPage ? (
+                        <Link 
+                          to="/profile" 
+                          className="flex items-center space-x-3 text-white hover:text-blue-300 transition-colors py-3 font-medium"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          <User className="w-5 h-5" />
+                          <span>Profile</span>
+                        </Link>
+                      ) : (
+                        <Link 
+                          to="/app" 
+                          className="flex items-center space-x-3 text-white hover:text-blue-300 transition-colors py-3 font-medium"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          <AppWindow className="w-5 h-5" />
+                          <span>App</span>
+                        </Link>
+                      )}
                       
                       {isAuthenticated && (
                         <Button 
