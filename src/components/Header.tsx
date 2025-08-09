@@ -172,73 +172,37 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
               <Link to="/app">
                 <Button 
                   variant="ghost" 
-                  className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white border-0 px-6 py-3 rounded-2xl font-semibold shadow-2xl shadow-blue-500/40 backdrop-blur-xl transition-all duration-500 hover:shadow-blue-500/60 hover:scale-105 hover:-translate-y-1 group"
+                  className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white border-0 px-6 py-3 rounded-2xl font-semibold shadow-lg transition-all duration-200 hover:scale-105"
                   style={{
-                    background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
-                    boxShadow: '0 8px 32px rgba(59, 130, 246, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)'
+                    background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)'
                   }}
                 >
-                  {/* Animated background overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  
-                  {/* Glow effect */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-400/20 to-purple-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  
-                  {/* Content */}
                   <div className="relative z-10 flex items-center space-x-2">
-                    <Zap className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" />
+                    <Zap className="w-4 h-4" />
                     <span className="font-bold">Studio</span>
                   </div>
                 </Button>
               </Link>
-              <motion.button
-                className="bg-white/10 hover:bg-white/20 p-2 rounded-lg border border-white/20 text-white"
+              <button
+                className="bg-white/10 hover:bg-white/20 p-2 rounded-lg border border-white/20 text-white transition-all duration-200"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
               >
-                <AnimatePresence mode="wait">
-                  {isMenuOpen ? (
-                    <motion.div
-                      key="close"
-                      initial={{ rotate: -90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: 90, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <X className="w-6 h-6" />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="menu"
-                      initial={{ rotate: 90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: -90, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Menu className="w-6 h-6" />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.button>
+                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
             </div>
           )}
         </div>
 
         {/* Mobile Navigation */}
         {shouldShowMobileMenu && (
-          <AnimatePresence>
+          <>
             {isMenuOpen && (
-              <motion.nav 
+              <nav 
                 className="md:hidden mt-4 pb-4 rounded-xl border border-white/10 bg-black/90 backdrop-blur-xl relative overflow-hidden"
                 style={{
                   background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(17, 17, 17, 0.95) 100%)',
                   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                 }}
-                initial={{ opacity: 0, height: 0, scale: 0.95 }}
-                animate={{ opacity: 1, height: "auto", scale: 1 }}
-                exit={{ opacity: 0, height: 0, scale: 0.95 }}
-                transition={{ duration: 0.25, ease: "easeOut" }}
               >
                 <div 
                   className="absolute inset-0 rounded-xl opacity-20"
@@ -270,18 +234,15 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                         <span>{link.label}</span>
                       </Link>
                     ) : (
-                      <motion.a 
+                      <a 
                         key={link.href}
                         href={link.href} 
                         className="text-white hover:text-blue-300 transition-colors py-2 font-medium block text-center flex items-center justify-center space-x-2"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.05, duration: 0.2, ease: "easeOut" }}
                         onClick={() => setIsMenuOpen(false)}
                       >
                         <IconComponent className="w-5 h-5" />
                         <span>{link.label}</span>
-                      </motion.a>
+                      </a>
                     );
                   })}
                   
@@ -395,9 +356,9 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                     </div>
                   )}
                 </div>
-              </motion.nav>
+              </nav>
             )}
-          </AnimatePresence>
+          </>
         )}
       </div>
       
