@@ -11,6 +11,42 @@ All colors MUST be HSL.
     scroll-behavior: smooth;
   }
   
+  /* iOS Status Bar Styling */
+  @supports (-webkit-touch-callout: none) {
+    /* iPhone-specific styles */
+    body {
+      /* Prevent white status bar on iOS */
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
+      /* Ensure background extends to status bar */
+      background-attachment: fixed;
+      background-size: cover;
+    }
+    
+    /* Status bar area styling for iPhone */
+    .status-bar-area {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: env(safe-area-inset-top);
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+      z-index: 9999;
+    }
+    
+    /* Ensure the main content area accounts for the status bar */
+    #root {
+      padding-top: env(safe-area-inset-top);
+    }
+  }
+  
+  /* Additional iOS-specific styling */
+  @supports (padding: max(0px)) {
+    body {
+      padding-top: max(0px, env(safe-area-inset-top));
+    }
+  }
+  
   :root {
     --background: 222 47% 5%;
     --foreground: 210 40% 98%;
@@ -146,6 +182,8 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground font-body;
     background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+    background-attachment: fixed;
+    background-size: cover;
     min-height: 100vh;
     overflow-x: hidden;
     font-feature-settings: "rlig" 1, "calt" 1;
@@ -153,6 +191,9 @@ All colors MUST be HSL.
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* iOS-specific styling */
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
   }
   
   h1, h2, h3, h4, h5, h6 {
