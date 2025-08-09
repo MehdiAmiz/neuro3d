@@ -128,23 +128,17 @@ export const HowItWorks = () => {
             >
               {/* Connection Line */}
               {index < steps.length - 1 && (
-                <motion.div 
+                <div 
                   className="absolute left-1/2 top-full w-0.5 h-24 bg-gradient-to-b from-primary/50 to-transparent z-0"
-                  initial={{ scaleY: 0 }}
-                  animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
-                  transition={{ delay: index * 0.3 + 1, duration: 0.8 }}
                 />
               )}
               
               <div className={`grid lg:grid-cols-2 gap-16 items-center ${
                 index % 2 === 1 ? 'lg:grid-flow-col-dense' : ''
               }`}>
-                {/* Enhanced Media Section */}
-                <motion.div 
+                {/* Media Section */}
+                <div 
                   className={`relative ${index % 2 === 1 ? 'lg:col-start-2' : ''}`}
-                  initial={{ opacity: 0, x: index % 2 === 1 ? 80 : -80 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: index % 2 === 1 ? 80 : -80 }}
-                  transition={{ delay: index * 0.3 + 0.5, duration: 1, ease: "easeOut" }}
                 >
                   <div className="relative group">
                     {/* Simplified Background Glow */}
@@ -191,38 +185,22 @@ export const HowItWorks = () => {
                     
                     {/* Play Button for Videos */}
                     {step.isVideo && (
-                      <motion.div 
+                      <div 
                         className="absolute inset-0 flex items-center justify-center z-20"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: index * 0.3 + 1.5, duration: 0.5 }}
                       >
-                        <motion.div 
+                        <div 
                           className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30 neon-glow"
-                          whileHover={{ scale: 1.1 }}
-                          animate={{ 
-                            scale: [1, 1.05, 1],
-                            opacity: [0.8, 1, 0.8]
-                          }}
-                          transition={{ 
-                            duration: 2, 
-                            repeat: Infinity, 
-                            ease: "easeInOut" 
-                          }}
                         >
                           <div className="w-0 h-0 border-l-[16px] border-l-white border-t-[12px] border-t-transparent border-b-[12px] border-b-transparent ml-1" />
-                        </motion.div>
-                      </motion.div>
+                        </div>
+                      </div>
                     )}
                   </div>
-                </motion.div>
+                </div>
                 
-                {/* Enhanced Content Section */}
-                <motion.div 
+                {/* Content Section */}
+                <div 
                   className={`text-center lg:text-left ${index % 2 === 1 ? 'lg:col-start-1' : ''}`}
-                  initial={{ opacity: 0, x: index % 2 === 1 ? -80 : 80 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: index % 2 === 1 ? -80 : 80 }}
-                  transition={{ delay: index * 0.3 + 0.8, duration: 1, ease: "easeOut" }}
                 >
                   <div className="relative p-10 rounded-3xl border border-primary/20 hover:border-primary/40 transition-all duration-500 group overflow-hidden">
                     {/* Enhanced Background Layers */}
@@ -230,72 +208,29 @@ export const HowItWorks = () => {
                     <div className="absolute inset-0 bg-gradient-to-tl from-primary/5 via-transparent to-accent/5 rounded-3xl" />
                     <div className="absolute inset-0 backdrop-blur-xl bg-black/10 rounded-3xl" />
                     
-                    {/* Animated Background Pattern */}
-                    <motion.div 
-                      className="absolute inset-0 opacity-20"
-                      animate={{ 
-                        backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"]
-                      }}
-                      transition={{ 
-                        duration: 20, 
-                        repeat: Infinity, 
-                        ease: "linear" 
-                      }}
-                      style={{
-                        backgroundImage: `radial-gradient(circle at 20% 80%, ${step.gradient.split(' ')[1]} 0%, transparent 50%), radial-gradient(circle at 80% 20%, ${step.gradient.split(' ')[3]} 0%, transparent 50%)`,
-                        backgroundSize: "200% 200%"
-                      }}
-                    />
-                    
-                    {/* Shimmer Effect */}
-                    <motion.div 
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12"
-                      animate={{ 
-                        x: ["-100%", "200%"]
-                      }}
-                      transition={{ 
-                        duration: 3, 
-                        repeat: Infinity, 
-                        ease: "linear",
-                        delay: index * 0.5
-                      }}
-                    />
-                    
                     {/* Content Container */}
-                <div className="relative z-10">
-                    {/* Step Icon */}
-                  <motion.div 
-                      className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r ${step.gradient} rounded-2xl mb-6 neon-glow`}
-                    whileHover={{ 
-                        scale: 1.15,
-                        rotate: 15,
-                        boxShadow: "0 0 30px rgba(var(--primary), 0.8)"
-                    }}
-                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                  >
-                    <step.icon className="w-8 h-8 text-white" />
-                  </motion.div>
-                  
-                  <motion.h3 
-                      className="text-3xl lg:text-4xl font-display font-bold mb-6 text-foreground"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                      transition={{ delay: index * 0.3 + 1.2, duration: 0.6 }}
-                  >
-                    {step.title}
-                  </motion.h3>
-                  
-                  <motion.p 
-                      className="text-lg text-foreground/70 leading-relaxed"
-                    initial={{ opacity: 0 }}
-                    animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                      transition={{ delay: index * 0.3 + 1.4, duration: 0.6 }}
-                  >
-                    {step.description}
-                  </motion.p>
-                </div>
+                    <div className="relative z-10">
+                      {/* Step Icon */}
+                      <div 
+                        className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r ${step.gradient} rounded-2xl mb-6 neon-glow`}
+                      >
+                        <step.icon className="w-8 h-8 text-white" />
+                      </div>
+                      
+                      <h3 
+                        className="text-3xl lg:text-4xl font-display font-bold mb-6 text-foreground"
+                      >
+                        {step.title}
+                      </h3>
+                      
+                      <p 
+                        className="text-lg text-foreground/70 leading-relaxed"
+                      >
+                        {step.description}
+                      </p>
+                    </div>
                   </div>
-                </motion.div>
+                </div>
               </div>
             </motion.div>
           ))}
