@@ -1,12 +1,14 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Sparkles, Upload, Download } from "lucide-react";
+import { ArrowRight, Play, Sparkles, Upload, Download, CreditCard } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-3d-transformation.jpg";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export const Hero = () => {
   const ref = useRef(null);
+  const [isCreditsOpen, setIsCreditsOpen] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"]
@@ -93,7 +95,7 @@ export const Hero = () => {
             </motion.div>
             
             <motion.h1 
-              className="text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-6 leading-tight"
+              className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
               variants={itemVariants}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
@@ -156,9 +158,14 @@ export const Hero = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button variant="outline" size="lg" className="group glass-card text-xl">
-                  <Play className="w-5 h-5 mr-2" />
-                  Watch Demo
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="group glass-card text-xl"
+                  onClick={() => setIsCreditsOpen(true)}
+                >
+                  <CreditCard className="w-5 h-5 mr-2" />
+                  Get Credits
                 </Button>
               </motion.div>
             </motion.div>
@@ -281,6 +288,48 @@ export const Hero = () => {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Get Credits Dialog */}
+      <Dialog open={isCreditsOpen} onOpenChange={setIsCreditsOpen}>
+        <DialogContent className="sm:max-w-[460px] bg-card/95 backdrop-blur-xl">
+          <DialogHeader>
+            <DialogTitle>Buy Credits</DialogTitle>
+            <DialogDescription>
+              Choose a credits pack and proceed to checkout to power your 2D → 3D conversions.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between p-3 rounded-lg border border-white/10 bg-white/5">
+              <div>
+                <div className="font-semibold">Starter</div>
+                <div className="text-sm text-foreground/70">100 credits</div>
+              </div>
+              <div className="font-semibold">$9</div>
+            </div>
+            <div className="flex items-center justify-between p-3 rounded-lg border border-white/10 bg-white/5">
+              <div>
+                <div className="font-semibold">Pro</div>
+                <div className="text-sm text-foreground/70">500 credits</div>
+              </div>
+              <div className="font-semibold">$39</div>
+            </div>
+            <div className="flex items-center justify-between p-3 rounded-lg border border-white/10 bg-white/5">
+              <div>
+                <div className="font-semibold">Enterprise</div>
+                <div className="text-sm text-foreground/70">2000 credits</div>
+              </div>
+              <div className="font-semibold">$129</div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Link to="/checkout" onClick={() => setIsCreditsOpen(false)}>
+              <Button className="w-full">
+                Proceed to Checkout
+              </Button>
+            </Link>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </motion.section>
   );
 };
