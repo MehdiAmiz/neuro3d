@@ -156,10 +156,23 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
               <Link to="/app">
                 <Button 
                   variant="ghost" 
-                  className="bg-gradient-to-r from-blue-600/90 via-purple-600/90 to-cyan-500/90 hover:from-blue-500 hover:via-purple-500 hover:to-cyan-400 text-white border border-white/20 px-4 py-2 rounded-xl font-medium shadow-lg shadow-blue-500/25 backdrop-blur-sm transition-all duration-300 hover:shadow-blue-500/40 hover:scale-105"
+                  className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-500 hover:from-blue-500 hover:via-purple-500 hover:to-cyan-400 text-white border-0 px-6 py-3 rounded-2xl font-semibold shadow-2xl shadow-blue-500/40 backdrop-blur-xl transition-all duration-500 hover:shadow-blue-500/60 hover:scale-105 hover:-translate-y-1 group"
+                  style={{
+                    background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 25%, #06b6d4 50%, #6366f1 75%, #8b5cf6 100%)',
+                    boxShadow: '0 8px 32px rgba(59, 130, 246, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)'
+                  }}
                 >
-                  <Zap className="w-4 h-4 mr-2" />
-                  Studio
+                  {/* Animated background overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-400/20 to-purple-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  {/* Content */}
+                  <div className="relative z-10 flex items-center space-x-2">
+                    <Zap className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" />
+                    <span className="font-bold">Studio</span>
+                  </div>
                 </Button>
               </Link>
               <motion.button
