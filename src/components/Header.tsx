@@ -21,7 +21,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
   // Check if we're on the App page or Profile page
   const isOnAppPage = isAppPage || location.pathname === '/app';
   const isOnProfilePage = location.pathname === '/profile';
-  const shouldShowMobileMenu = !isOnAppPage || isOnProfilePage;
+  const shouldShowMobileMenu = true; // Always show mobile menu on mobile devices
 
   const handleLogout = () => {
     logout();
@@ -153,7 +153,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
           {/* Mobile Menu Button */}
           {shouldShowMobileMenu && (
             <motion.button
-              className="md:hidden glass-card p-2 rounded-lg"
+              className="md:hidden bg-white/10 hover:bg-white/20 p-2 rounded-lg border border-white/20 text-white"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -190,7 +190,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
           <AnimatePresence>
             {isMenuOpen && (
               <motion.nav 
-                className="md:hidden mt-4 pb-4 border-t border-white/20 glass-card rounded-lg"
+                className="md:hidden mt-4 pb-4 border-t border-white/20 bg-black/40 backdrop-blur-md rounded-lg border border-white/20"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
@@ -211,7 +211,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                       <Link
                         key={link.href}
                         to={link.href}
-                        className="text-foreground/80 hover:text-primary transition-colors py-2"
+                        className="text-white hover:text-blue-300 transition-colors py-2 font-medium"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         {link.label}
@@ -220,7 +220,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                       <motion.a 
                         key={link.href}
                         href={link.href} 
-                        className="text-foreground/80 hover:text-primary transition-colors py-2"
+                        className="text-white hover:text-blue-300 transition-colors py-2 font-medium"
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1, duration: 0.3 }}
@@ -234,10 +234,10 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                   {/* Show page-specific navigation for App and Profile pages */}
                   {isOnAppPage && (
                     <div className="space-y-2">
-                      <Link to="/" className="text-foreground/80 hover:text-primary transition-colors py-2 block">
+                      <Link to="/" className="text-white hover:text-blue-300 transition-colors py-2 block font-medium">
                         ← Back to Home
                       </Link>
-                      <Link to="/profile" className="text-foreground/80 hover:text-primary transition-colors py-2 block">
+                      <Link to="/profile" className="text-white hover:text-blue-300 transition-colors py-2 block font-medium">
                         Profile
                       </Link>
                     </div>
@@ -245,10 +245,10 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                   
                   {isOnProfilePage && (
                     <div className="space-y-2">
-                      <Link to="/" className="text-foreground/80 hover:text-primary transition-colors py-2 block">
+                      <Link to="/" className="text-white hover:text-blue-300 transition-colors py-2 block font-medium">
                         ← Back to Home
                       </Link>
-                      <Link to="/app" className="text-foreground/80 hover:text-primary transition-colors py-2 block">
+                      <Link to="/app" className="text-white hover:text-blue-300 transition-colors py-2 block font-medium">
                         App
                       </Link>
                     </div>
@@ -257,24 +257,24 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                   <div className="flex flex-col space-y-2 pt-4">
                     {isAuthenticated ? (
                       <>
-                        <div className="flex items-center space-x-2 px-3 py-2 bg-white/5 rounded-lg">
+                        <div className="flex items-center space-x-2 px-3 py-2 bg-white/10 rounded-lg border border-white/20">
                           <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
                             <User className="w-4 h-4 text-white" />
                           </div>
                           <div>
-                            <p className="text-foreground font-medium text-sm">{user?.name}</p>
-                            <p className="text-foreground/60 text-xs">{user?.email}</p>
+                            <p className="text-white font-medium text-sm">{user?.name}</p>
+                            <p className="text-gray-300 text-xs">{user?.email}</p>
                           </div>
                         </div>
                         <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
-                          <Button variant="ghost" className="glass-card w-full">
+                          <Button variant="ghost" className="bg-white/10 hover:bg-white/20 text-white border border-white/20 w-full">
                             <Settings className="w-4 h-4 mr-2" />
                             Profile
                           </Button>
                         </Link>
                         <Button 
                           variant="ghost" 
-                          className="glass-card"
+                          className="bg-white/10 hover:bg-white/20 text-white border border-white/20"
                           onClick={() => {
                             handleLogout();
                             setIsMenuOpen(false);
@@ -287,7 +287,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                     ) : (
                       <Button 
                         variant="ghost" 
-                        className="glass-card"
+                        className="bg-white/10 hover:bg-white/20 text-white border border-white/20"
                         onClick={() => {
                           setIsAuthModalOpen(true);
                           setIsMenuOpen(false);
