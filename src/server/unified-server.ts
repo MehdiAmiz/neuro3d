@@ -10,6 +10,9 @@ import postgresDb from '../lib/postgres-database';
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+// Behind Nginx: trust proxy headers for correct IPs and rate-limiting
+app.set('trust proxy', 1);
+
 // Your Shopify webhook secret
 const WEBHOOK_SECRET = '1f196232a000ca9b51e3c3f308d0388a';
 
