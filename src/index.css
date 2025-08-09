@@ -47,6 +47,106 @@ All colors MUST be HSL.
     }
   }
   
+  /* Comprehensive background styling to prevent white backgrounds */
+  html,
+  body,
+  #root,
+  div[data-reactroot],
+  #__next {
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%) !important;
+    background-attachment: fixed !important;
+    background-size: cover !important;
+    min-height: 100vh;
+  }
+  
+  /* Ensure all sections and components have proper background */
+  section,
+  div,
+  main,
+  article,
+  aside,
+  header,
+  footer,
+  nav,
+  span,
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    background: transparent !important;
+  }
+  
+  /* Specific styling for components that might have white backgrounds */
+  .bg-white,
+  .bg-gray-50,
+  .bg-gray-100,
+  .bg-gray-200,
+  .bg-gray-300,
+  .bg-gray-400,
+  .bg-gray-500,
+  .bg-gray-600,
+  .bg-gray-700,
+  .bg-gray-800,
+  .bg-gray-900,
+  .bg-slate-50,
+  .bg-slate-100,
+  .bg-slate-200,
+  .bg-slate-300,
+  .bg-slate-400,
+  .bg-slate-500,
+  .bg-slate-600,
+  .bg-slate-700,
+  .bg-slate-800,
+  .bg-slate-900 {
+    background: transparent !important;
+  }
+  
+  /* Handle loading states and animation containers */
+  .animate-pulse,
+  .animate-spin,
+  .animate-bounce,
+  .animate-ping,
+  .animate-none,
+  .motion-safe:animate-pulse,
+  .motion-safe:animate-spin,
+  .motion-safe:animate-bounce,
+  .motion-safe:animate-ping,
+  .motion-safe:animate-none {
+    background: transparent !important;
+  }
+  
+  /* Handle any potential white backgrounds in Tailwind classes */
+  [class*="bg-"]:not([class*="bg-gradient"]):not([class*="bg-primary"]):not([class*="bg-accent"]):not([class*="bg-background"]):not([class*="bg-card"]):not([class*="bg-popover"]):not([class*="bg-muted"]):not([class*="bg-destructive"]):not([class*="bg-border"]):not([class*="bg-input"]):not([class*="bg-ring"]):not([class*="bg-secondary"]):not([class*="bg-foreground"]) {
+    background: transparent !important;
+  }
+  
+  /* Handle any inline styles that might set white backgrounds */
+  div[style*="background: white"],
+  div[style*="background: #fff"],
+  div[style*="background: #ffffff"],
+  div[style*="background-color: white"],
+  div[style*="background-color: #fff"],
+  div[style*="background-color: #ffffff"] {
+    background: transparent !important;
+  }
+  
+  /* Ensure framer-motion containers don't have white backgrounds */
+  [data-framer-component-type],
+  [data-framer-component-id] {
+    background: transparent !important;
+  }
+  
+  /* Handle any potential white backgrounds in React components */
+  [data-testid],
+  [class*="component"],
+  [class*="container"],
+  [class*="wrapper"] {
+    background: transparent !important;
+  }
+  
   :root {
     --background: 222 47% 5%;
     --foreground: 210 40% 98%;
@@ -303,4 +403,65 @@ All colors MUST be HSL.
   .pulse-glow {
     animation: pulse-glow 2s ease-in-out infinite;
   }
+}
+
+/* Additional comprehensive background fixes */
+/* Only target elements that might have white backgrounds, not all elements */
+div:not([class*="bg-gradient"]):not([class*="bg-primary"]):not([class*="bg-accent"]):not([class*="bg-background"]):not([class*="bg-card"]):not([class*="bg-popover"]):not([class*="bg-muted"]):not([class*="bg-destructive"]):not([class*="bg-border"]):not([class*="bg-input"]):not([class*="bg-ring"]):not([class*="bg-secondary"]):not([class*="bg-foreground"]):not([class*="glass"]):not([class*="neon"]),
+section:not([class*="bg-gradient"]):not([class*="bg-primary"]):not([class*="bg-accent"]):not([class*="bg-background"]):not([class*="bg-card"]):not([class*="bg-popover"]):not([class*="bg-muted"]):not([class*="bg-destructive"]):not([class*="bg-border"]):not([class*="bg-input"]):not([class*="bg-ring"]):not([class*="bg-secondary"]):not([class*="bg-foreground"]):not([class*="glass"]):not([class*="neon"]) {
+  background: transparent !important;
+}
+
+/* Ensure the main container elements have the proper background */
+.container,
+.mx-auto,
+.px-4,
+.py-4,
+.py-8,
+.py-12,
+.py-16,
+.py-20,
+.py-24 {
+  background: transparent !important;
+}
+
+/* Handle any potential white backgrounds in specific components */
+.glass-card,
+.glass,
+.glass-dark,
+.neon-glow,
+.neon-glow-purple,
+.neon-glow-cyan {
+  background: inherit;
+}
+
+/* Ensure all motion components maintain transparency */
+[data-motion-component],
+[data-motion-div],
+[data-motion-section],
+[data-motion-article],
+[data-motion-aside],
+[data-motion-header],
+[data-motion-footer],
+[data-motion-nav] {
+  background: transparent !important;
+}
+
+/* Handle any potential white backgrounds in utility classes */
+.bg-opacity-0,
+.bg-opacity-5,
+.bg-opacity-10,
+.bg-opacity-20,
+.bg-opacity-25,
+.bg-opacity-30,
+.bg-opacity-40,
+.bg-opacity-50,
+.bg-opacity-60,
+.bg-opacity-70,
+.bg-opacity-75,
+.bg-opacity-80,
+.bg-opacity-90,
+.bg-opacity-95,
+.bg-opacity-100 {
+  background: transparent !important;
 }
