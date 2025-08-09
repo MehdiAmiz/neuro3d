@@ -201,7 +201,7 @@ export const Hero = () => {
           </div>
           
           <motion.div 
-            className="relative"
+            className="relative hidden md:block"
             variants={itemVariants}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
