@@ -195,10 +195,10 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                   background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(17, 17, 17, 0.95) 100%)',
                   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                 }}
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
+                initial={{ opacity: 0, height: 0, scale: 0.95 }}
+                animate={{ opacity: 1, height: "auto", scale: 1 }}
+                exit={{ opacity: 0, height: 0, scale: 0.95 }}
+                transition={{ duration: 0.25, ease: "easeOut" }}
               >
                 <div 
                   className="absolute inset-0 rounded-xl opacity-20"
@@ -234,9 +234,9 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                         key={link.href}
                         href={link.href} 
                         className="text-white hover:text-blue-300 transition-colors py-2 font-medium block text-center flex items-center justify-center space-x-2"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1, duration: 0.3 }}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.05, duration: 0.2, ease: "easeOut" }}
                         onClick={() => setIsMenuOpen(false)}
                       >
                         <IconComponent className="w-5 h-5" />
