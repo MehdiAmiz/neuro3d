@@ -14,7 +14,8 @@ import {
   RefreshCw,
   AlertCircle,
   BarChart3,
-  Activity
+  Activity,
+  Clock
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { userService } from "@/lib/api-client";
@@ -34,6 +35,26 @@ interface Analytics {
     today: { users: number; percentage: number };
     week: { users: number; percentage: number };
     month: { users: number; percentage: number };
+  };
+  shopify: {
+    totalOrders: number;
+    todayOrders: number;
+    weekOrders: number;
+    monthOrders: number;
+    totalRevenue: number;
+    todayRevenue: number;
+    weekRevenue: number;
+    monthRevenue: number;
+    avgOrderValue: number;
+    conversionRate: number;
+    abandonedCarts: number;
+    totalCheckoutSessions: number;
+    recentSales: Array<{ date: string; orders: number; revenue: number }>;
+    periods: {
+      today: { orders: number; revenue: number; percentage: number };
+      week: { orders: number; revenue: number; percentage: number };
+      month: { orders: number; revenue: number; percentage: number };
+    };
   };
 }
 
@@ -180,6 +201,41 @@ export const AdminDashboard = () => {
     }
   ];
 
+  const salesStats = [
+    {
+      title: "Total Orders",
+      value: formatNumber(analytics.shopify.totalOrders),
+      icon: <Package className="w-6 h-6" />,
+      change: `+${analytics.shopify.todayOrders} today`,
+      gradient: "from-indigo-500 to-purple-500",
+      description: "Shopify orders"
+    },
+    {
+      title: "Total Revenue",
+      value: formatCurrency(analytics.shopify.totalRevenue),
+      icon: <CreditCard className="w-6 h-6" />,
+      change: `+${formatCurrency(analytics.shopify.todayRevenue)} today`,
+      gradient: "from-yellow-500 to-orange-500",
+      description: "Total sales value"
+    },
+    {
+      title: "Avg Order Value",
+      value: formatCurrency(analytics.shopify.avgOrderValue),
+      icon: <TrendingUp className="w-6 h-6" />,
+      change: `${analytics.shopify.conversionRate}% conversion`,
+      gradient: "from-teal-500 to-cyan-500",
+      description: "Average per order"
+    },
+    {
+      title: "Checkout Sessions",
+      value: formatNumber(analytics.shopify.totalCheckoutSessions),
+      icon: <Activity className="w-6 h-6" />,
+      change: `${analytics.shopify.abandonedCarts} abandoned`,
+      gradient: "from-rose-500 to-pink-500",
+      description: "Shopping sessions"
+    }
+  ];
+
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
@@ -238,6 +294,40 @@ export const AdminDashboard = () => {
             </Card>
           </motion.div>
         ))}
+      </div>
+
+      {/* Sales Stats Grid */}
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold mb-6">Sales Analytics</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {salesStats.map((stat, index) => (
+            <motion.div
+              key={stat.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: (index + 4) * 0.1 }}
+            >
+              <Card className="relative overflow-hidden">
+                <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-10`} />
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-sm font-medium text-muted-foreground">
+                      {stat.title}
+                    </CardTitle>
+                    {stat.icon}
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-bold">{stat.value}</h3>
+                    <p className="text-sm text-muted-foreground">{stat.description}</p>
+                    <p className="text-sm text-green-500">{stat.change}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
       </div>
 
       {/* Period Overview */}
@@ -364,6 +454,150 @@ export const AdminDashboard = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Shopify Analytics Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <CreditCard className="w-5 h-5" />
+              Sales Performance
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span>Total Revenue</span>
+                <span className="font-semibold">{formatCurrency(analytics.shopify.totalRevenue)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Avg Order Value</span>
+                <span className="font-semibold">{formatCurrency(analytics.shopify.avgOrderValue)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Conversion Rate</span>
+                <span className="font-semibold">{analytics.shopify.conversionRate}%</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Activity className="w-5 h-5" />
+              Order Activity
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span>Today</span>
+                <Badge variant="outline">+{analytics.shopify.todayOrders}</Badge>
+              </div>
+              <div className="flex justify-between">
+                <span>This Week</span>
+                <Badge variant="outline">+{analytics.shopify.weekOrders}</Badge>
+              </div>
+              <div className="flex justify-between">
+                <span>This Month</span>
+                <Badge variant="outline">+{analytics.shopify.monthOrders}</Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="w-5 h-5" />
+              Revenue Trends
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span>Today</span>
+                <span className="font-semibold">{formatCurrency(analytics.shopify.todayRevenue)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>This Week</span>
+                <span className="font-semibold">{formatCurrency(analytics.shopify.weekRevenue)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>This Month</span>
+                <span className="font-semibold">{formatCurrency(analytics.shopify.monthRevenue)}</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Recent Activity */}
+      <Card className="mt-6">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Clock className="w-5 h-5" />
+            Recent Activity
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">User Registrations (Last 7 days)</span>
+              <Badge variant="secondary">{analytics.recentActivity.length} days</Badge>
+            </div>
+            <div className="space-y-2">
+              {analytics.recentActivity.map((activity, index) => (
+                <div key={index} className="flex items-center justify-between p-2 bg-muted rounded-lg">
+                  <span className="text-sm">
+                    {new Date(activity.date).toLocaleDateString()}
+                  </span>
+                  <Badge variant="outline">+{activity.count} users</Badge>
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Recent Sales Activity */}
+      <Card className="mt-6">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <CreditCard className="w-5 h-5" />
+            Recent Sales Activity
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Sales (Last 7 days)</span>
+              <Badge variant="secondary">{analytics.shopify.recentSales.length} days</Badge>
+            </div>
+            <div className="space-y-2">
+              {analytics.shopify.recentSales.length > 0 ? (
+                analytics.shopify.recentSales.map((sale, index) => (
+                  <div key={index} className="flex items-center justify-between p-2 bg-muted rounded-lg">
+                    <span className="text-sm">
+                      {new Date(sale.date).toLocaleDateString()}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline">{sale.orders} orders</Badge>
+                      <Badge variant="default">{formatCurrency(sale.revenue)}</Badge>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-4 text-muted-foreground">
+                  <Package className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                  <p>No sales activity yet</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

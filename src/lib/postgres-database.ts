@@ -78,7 +78,7 @@ export class PostgresDatabase {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-    const monthAgo = new Date(today.getFullYear(), now.getMonth() - 1, now.getDate());
+    const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
 
     // Total users
     const totalUsersResult = await this.pool.query('SELECT COUNT(*) as count FROM users');
@@ -131,6 +131,9 @@ export class PostgresDatabase {
       [weekAgo]
     );
 
+    // Shopify Analytics
+    const shopifyAnalytics = await this.getShopifyAnalytics(now, today, weekAgo, monthAgo);
+
     return {
       totalUsers,
       todayUsers,
@@ -153,6 +156,113 @@ export class PostgresDatabase {
         month: {
           users: monthUsers,
           percentage: totalUsers > 0 ? Math.round((monthUsers / totalUsers) * 100) : 0
+        }
+      },
+      shopify: shopifyAnalytics
+    };
+  }
+
+  async getShopifyAnalytics(now: Date, today: Date, weekAgo: Date, monthAgo: Date) {
+    // Total orders
+    const totalOrdersResult = await this.pool.query('SELECT COUNT(*) as count FROM shopify_orders');
+    const totalOrders = parseInt(totalOrdersResult.rows[0].count || '0');
+
+    // Orders today
+    const todayOrdersResult = await this.pool.query(
+      'SELECT COUNT(*) as count FROM shopify_orders WHERE created_at >= $1',
+      [today]
+    );
+    const todayOrders = parseInt(todayOrdersResult.rows[0].count || '0');
+
+    // Orders this week
+    const weekOrdersResult = await this.pool.query(
+      'SELECT COUNT(*) as count FROM shopify_orders WHERE created_at >= $1',
+      [weekAgo]
+    );
+    const weekOrders = parseInt(weekOrdersResult.rows[0].count || '0');
+
+    // Orders this month
+    const monthOrdersResult = await this.pool.query(
+      'SELECT COUNT(*) as count FROM shopify_orders WHERE created_at >= $1',
+      [monthAgo]
+    );
+    const monthOrders = parseInt(monthOrdersResult.rows[0].count || '0');
+
+    // Total revenue
+    const totalRevenueResult = await this.pool.query('SELECT SUM(total_price) as total FROM shopify_orders WHERE financial_status = \'paid\'');
+    const totalRevenue = parseFloat(totalRevenueResult.rows[0].total || '0');
+
+    // Revenue today
+    const todayRevenueResult = await this.pool.query(
+      'SELECT SUM(total_price) as total FROM shopify_orders WHERE financial_status = \'paid\' AND created_at >= $1',
+      [today]
+    );
+    const todayRevenue = parseFloat(todayRevenueResult.rows[0].total || '0');
+
+    // Revenue this week
+    const weekRevenueResult = await this.pool.query(
+      'SELECT SUM(total_price) as total FROM shopify_orders WHERE financial_status = \'paid\' AND created_at >= $1',
+      [weekAgo]
+    );
+    const weekRevenue = parseFloat(weekRevenueResult.rows[0].total || '0');
+
+    // Revenue this month
+    const monthRevenueResult = await this.pool.query(
+      'SELECT SUM(total_price) as total FROM shopify_orders WHERE financial_status = \'paid\' AND created_at >= $1',
+      [monthAgo]
+    );
+    const monthRevenue = parseFloat(monthRevenueResult.rows[0].total || '0');
+
+    // Average order value
+    const avgOrderValueResult = await this.pool.query('SELECT AVG(total_price) as average FROM shopify_orders WHERE financial_status = \'paid\'');
+    const avgOrderValue = parseFloat(avgOrderValueResult.rows[0].average || '0');
+
+    // Conversion rate (checkout sessions to orders)
+    const checkoutSessionsResult = await this.pool.query('SELECT COUNT(*) as count FROM shopify_checkout_sessions');
+    const totalCheckoutSessions = parseInt(checkoutSessionsResult.rows[0].count || '0');
+    const conversionRate = totalCheckoutSessions > 0 ? (totalOrders / totalCheckoutSessions) * 100 : 0;
+
+    // Abandoned carts
+    const abandonedCartsResult = await this.pool.query(
+      'SELECT COUNT(*) as count FROM shopify_checkout_sessions WHERE completed_at IS NULL AND abandoned_at IS NOT NULL'
+    );
+    const abandonedCarts = parseInt(abandonedCartsResult.rows[0].count || '0');
+
+    // Recent sales activity
+    const recentSalesResult = await this.pool.query(
+      'SELECT DATE(created_at) as date, COUNT(*) as orders, SUM(total_price) as revenue FROM shopify_orders WHERE financial_status = \'paid\' AND created_at >= $1 GROUP BY DATE(created_at) ORDER BY date DESC',
+      [weekAgo]
+    );
+
+    return {
+      totalOrders,
+      todayOrders,
+      weekOrders,
+      monthOrders,
+      totalRevenue,
+      todayRevenue,
+      weekRevenue,
+      monthRevenue,
+      avgOrderValue: Math.round(avgOrderValue * 100) / 100,
+      conversionRate: Math.round(conversionRate * 100) / 100,
+      abandonedCarts,
+      totalCheckoutSessions,
+      recentSales: recentSalesResult.rows,
+      periods: {
+        today: {
+          orders: todayOrders,
+          revenue: todayRevenue,
+          percentage: totalOrders > 0 ? Math.round((todayOrders / totalOrders) * 100) : 0
+        },
+        week: {
+          orders: weekOrders,
+          revenue: weekRevenue,
+          percentage: totalOrders > 0 ? Math.round((weekOrders / totalOrders) * 100) : 0
+        },
+        month: {
+          orders: monthOrders,
+          revenue: monthRevenue,
+          percentage: totalOrders > 0 ? Math.round((monthOrders / totalOrders) * 100) : 0
         }
       }
     };
