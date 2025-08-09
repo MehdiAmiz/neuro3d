@@ -263,7 +263,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                         </Link>
                       )}
                       
-                      {isAuthenticated && (
+                      {isAuthenticated ? (
                         <Button 
                           variant="ghost" 
                           className="flex items-center space-x-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 w-full justify-start"
@@ -274,6 +274,18 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                         >
                           <LogOut className="w-5 h-5" />
                           <span>Sign Out</span>
+                        </Button>
+                      ) : (
+                        <Button 
+                          variant="ghost" 
+                          className="flex items-center space-x-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 w-full justify-start"
+                          onClick={() => {
+                            setIsAuthModalOpen(true);
+                            setIsMenuOpen(false);
+                          }}
+                        >
+                          <User className="w-5 h-5" />
+                          <span>Sign In</span>
                         </Button>
                       )}
                     </div>
