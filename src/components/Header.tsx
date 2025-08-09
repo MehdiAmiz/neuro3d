@@ -350,9 +350,6 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                           Sign In
                         </Button>
                       )}
-                      <Link to="/app" onClick={() => setIsMenuOpen(false)}>
-                        <Button variant="neural" className="glass-card neon-glow w-full">Start Converting</Button>
-                      </Link>
                     </div>
                   )}
                 </div>
