@@ -272,14 +272,14 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
             <AnimatePresence>
               {isSuccess && (
                 <motion.div
-                  className="absolute inset-0 rounded-3xl flex items-center justify-center bg-gradient-to-br from-green-500 to-emerald-500"
+                  className="absolute inset-0 rounded-3xl flex items-center justify-center bg-green-500"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                 >
                   <div className="text-center">
                     <motion.div
-                      className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4"
+                      className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4"
                       initial={{ scale: 0, rotate: -180 }}
                       animate={{ scale: 1, rotate: 0 }}
                       transition={{ delay: 0.2, duration: 0.6, type: "spring" }}
@@ -289,7 +289,7 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                     <h3 className="text-2xl font-bold text-white mb-2">
                       {activeTab === 'signup' ? 'Account Created!' : 'Welcome Back!'}
                     </h3>
-                    <p className="text-white/80">
+                    <p className="text-white/90">
                       {activeTab === 'signup' 
                         ? 'Your account has been successfully created.' 
                         : 'You have been successfully signed in.'
