@@ -21,6 +21,8 @@ const Index = () => {
     >
       <ScrollProgress />
       <Header />
+      {/* Spacer to offset fixed header height */}
+      <div className="h-16 md:h-20" />
       <Hero />
       <Features />
       <HowItWorks />
