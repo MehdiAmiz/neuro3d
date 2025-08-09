@@ -142,7 +142,7 @@ export const Contact = () => {
   };
 
   return (
-    <motion.section 
+    <section 
       ref={ref}
       id="contact" 
       className="py-24 relative overflow-hidden"
@@ -151,14 +151,33 @@ export const Contact = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-muted/10 to-transparent" />
       
       <div className="container mx-auto px-4 relative z-10">
-        {/* Simplified Header */}
+        {/* Mobile: No animations */}
+        <div className="text-center mb-16 md:hidden">
+          <div 
+            className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-3xl mb-8"
+          >
+            <MessageSquare className="w-12 h-12 text-white" />
+          </div>
+          
+          <h2 className="text-4xl lg:text-5xl font-display font-bold mb-8">
+            Get in{" "}
+            <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent">
+              Touch
+            </span>
+          </h2>
+          
+          <p className="text-xl text-foreground/70 max-w-4xl mx-auto leading-relaxed">
+            Have questions about NexodusAI? Our support team is here to help you succeed with your 3D modeling projects.
+          </p>
+        </div>
+
+        {/* Desktop: Keep animations */}
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-16 hidden md:block"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6 }}
         >
-          {/* Simplified Icon */}
           <motion.div 
             className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-3xl mb-8"
             initial={{ scale: 0, rotate: -180 }}
@@ -185,9 +204,98 @@ export const Contact = () => {
         </motion.div>
         
         <div className="grid lg:grid-cols-2 gap-16 max-w-7xl mx-auto">
-          {/* Contact Form */}
+          {/* Mobile: No animations */}
+          <div className="relative md:hidden">
+            <div className="relative">
+              {/* Form Background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-3xl" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent rounded-3xl" />
+              <div className="absolute inset-0 backdrop-blur-xl bg-black/20 rounded-3xl border border-white/10" />
+              
+              {/* Form Content */}
+              <div className="relative z-10 p-8">
+                <h3 
+                  className="text-2xl font-display font-bold mb-6 text-foreground"
+                >
+                  Send us a Message
+                </h3>
+                
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="relative group">
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        placeholder="Your Name"
+                        className="relative z-10 w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-foreground placeholder-foreground/50 focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300"
+                        required
+                      />
+                    </div>
+                    
+                    <div className="relative group">
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        placeholder="Your Email"
+                        className="relative z-10 w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-foreground placeholder-foreground/50 focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300"
+                        required
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="relative group">
+                    <input
+                      type="text"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      placeholder="Subject"
+                      className="relative z-10 w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-foreground placeholder-foreground/50 focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300"
+                      required
+                    />
+                  </div>
+                  
+                  <div className="relative group">
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      placeholder="Your Message"
+                      rows={6}
+                      className="relative z-10 w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-foreground placeholder-foreground/50 focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 resize-none"
+                      required
+                    />
+                  </div>
+                  
+                  <Button 
+                    type="submit" 
+                    disabled={isSubmitting}
+                    className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:shadow-lg hover:scale-105 transition-all duration-300"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4 mr-2" />
+                        Send Message
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop: Keep animations */}
           <motion.div 
-            className="relative"
+            className="relative hidden md:block"
             initial={{ opacity: 0, x: -60 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -60 }}
             transition={{ delay: 0.8, duration: 1 }}
@@ -261,7 +369,7 @@ export const Contact = () => {
                         required
                       />
                       <motion.div 
-                        className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-cyan-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"
+                        className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"
                         initial={{ scale: 0.8 }}
                         whileHover={{ scale: 1.02 }}
                       />
@@ -284,7 +392,7 @@ export const Contact = () => {
                       required
                     />
                     <motion.div 
-                      className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"
+                      className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"
                       initial={{ scale: 0.8 }}
                       whileHover={{ scale: 1.02 }}
                     />
@@ -306,56 +414,35 @@ export const Contact = () => {
                       required
                     />
                     <motion.div 
-                      className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"
+                      className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"
                       initial={{ scale: 0.8 }}
                       whileHover={{ scale: 1.02 }}
                     />
                   </motion.div>
                   
-                                     <motion.div
-                     initial={{ opacity: 0, y: 20 }}
-                     animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                     transition={{ delay: 1.4, duration: 0.6 }}
-                   >
-                     <Button 
-                       type="submit"
-                       disabled={isSubmitting}
-                       className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed"
-                     >
-                       {isSubmitting ? (
-                         <>
-                           <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                           Sending...
-                         </>
-                       ) : (
-                         <>
-                           <Send className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
-                           Send Message
-                         </>
-                       )}
-                     </Button>
-                   </motion.div>
-                   
-                   {/* Status Messages */}
-                   {submitStatus === 'success' && (
-                     <motion.div
-                       initial={{ opacity: 0, y: 10 }}
-                       animate={{ opacity: 1, y: 0 }}
-                       className="text-center p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400"
-                     >
-                       ✅ Message sent successfully! We'll get back to you soon.
-                     </motion.div>
-                   )}
-                   
-                   {submitStatus === 'error' && (
-                     <motion.div
-                       initial={{ opacity: 0, y: 10 }}
-                       animate={{ opacity: 1, y: 0 }}
-                       className="text-center p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400"
-                     >
-                       ❌ Failed to send message. Please try again or contact us directly.
-                     </motion.div>
-                   )}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    transition={{ delay: 1.4, duration: 0.6 }}
+                  >
+                    <Button 
+                      type="submit" 
+                      disabled={isSubmitting}
+                      className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:shadow-lg hover:scale-105 transition-all duration-300"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4 mr-2" />
+                          Send Message
+                        </>
+                      )}
+                    </Button>
+                  </motion.div>
                 </form>
               </div>
             </div>
@@ -364,118 +451,51 @@ export const Contact = () => {
           {/* Contact Methods */}
           <motion.div 
             className="space-y-8"
-            initial={{ opacity: 0, x: 60 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 60 }}
-            transition={{ delay: 1, duration: 1 }}
+            variants={containerVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
           >
-            {/* Contact Methods */}
-            <motion.div 
-              className="space-y-6"
-              variants={containerVariants}
-              initial="hidden"
-              animate={isInView ? "visible" : "hidden"}
-            >
-              {contactMethods.map((method, index) => (
-                <motion.div 
-                  key={index}
-                  variants={itemVariants}
-                  transition={{ duration: 0.8, delay: method.delay }}
-                  className="group"
-                >
-                  <div className="relative">
-                    {/* Card Background */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${method.gradient} rounded-2xl opacity-5 group-hover:opacity-10 transition-opacity duration-500`} />
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent rounded-2xl" />
-                    <div className="absolute inset-0 backdrop-blur-xl bg-black/20 rounded-2xl border border-white/10" />
+            {contactMethods.map((method, index) => (
+              <motion.div 
+                key={index} 
+                variants={itemVariants}
+                transition={{ duration: 0.8, delay: method.delay }}
+                className="group"
+              >
+                <div className="relative">
+                  {/* Card Background */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${method.gradient} rounded-3xl opacity-5 group-hover:opacity-10 transition-opacity duration-500`} />
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent rounded-3xl" />
+                  <div className="absolute inset-0 backdrop-blur-xl bg-black/20 rounded-3xl border border-white/10" />
+                  
+                  {/* Content */}
+                  <div className="relative z-10 p-6 flex items-center space-x-4">
+                    <div className={`w-16 h-16 bg-gradient-to-r ${method.gradient} rounded-2xl flex items-center justify-center flex-shrink-0`}>
+                      <method.icon className="w-8 h-8 text-white" />
+                    </div>
                     
-                    {/* Content */}
-                    <div className="relative z-10 p-6">
-                      <div className="flex items-start space-x-4">
-                        <motion.div 
-                          className={`w-12 h-12 bg-gradient-to-r ${method.gradient} rounded-xl flex items-center justify-center neon-glow`}
-                          whileHover={{ 
-                            scale: 1.1,
-                            rotate: 5,
-                            boxShadow: "0 0 20px rgba(var(--primary), 0.6)"
-                          }}
-                          transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                        >
-                          <method.icon className="w-6 h-6 text-white" />
-                        </motion.div>
-                        
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between mb-2">
-                            <h4 className="font-display font-bold text-foreground">
-                              {method.title}
-                            </h4>
-                            <motion.div 
-                              className="text-2xl"
-                              animate={{ 
-                                y: [0, -5, 0],
-                                scale: [1, 1.1, 1]
-                              }}
-                              transition={{ 
-                                duration: 3, 
-                                repeat: Infinity, 
-                                ease: "easeInOut",
-                                delay: index * 0.5
-                              }}
-                            >
-                              {method.emoji}
-                            </motion.div>
-                          </div>
-                          <p className="text-foreground/70 text-sm mb-2">
-                            {method.description}
-                          </p>
-                          <p className="text-foreground font-semibold">
-                            {method.value}
-                          </p>
-                        </div>
-                      </div>
+                    <div className="flex-1">
+                      <h4 className="text-xl font-semibold text-foreground mb-2">
+                        {method.title}
+                      </h4>
+                      <p className="text-foreground/70 mb-1">
+                        {method.description}
+                      </p>
+                      <p className="text-foreground/90 font-medium">
+                        {method.value}
+                      </p>
+                    </div>
+                    
+                    <div className="text-4xl">
+                      {method.emoji}
                     </div>
                   </div>
-                </motion.div>
-              ))}
-            </motion.div>
-            
-            {/* Features */}
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-3 gap-4"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ delay: 1.5, duration: 0.8 }}
-            >
-              {features.map((feature, index) => (
-                <motion.div 
-                  key={index}
-                  className="text-center p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10"
-                  whileHover={{ 
-                    scale: 1.05,
-                    backgroundColor: "rgba(255, 255, 255, 0.1)"
-                  }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <motion.div 
-                    className={`w-12 h-12 bg-gradient-to-r ${feature.gradient} rounded-lg flex items-center justify-center mx-auto mb-3`}
-                    whileHover={{ 
-                      scale: 1.1,
-                      rotate: 5
-                    }}
-                  >
-                    <feature.icon className="w-6 h-6 text-white" />
-                  </motion.div>
-                  <h5 className="font-display font-bold text-sm text-foreground mb-1">
-                    {feature.title}
-                  </h5>
-                  <p className="text-foreground/60 text-xs">
-                    {feature.description}
-                  </p>
-                </motion.div>
-              ))}
-            </motion.div>
+                </div>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 }; 

@@ -54,7 +54,7 @@ export const Reviews = () => {
   };
 
   return (
-    <motion.section 
+    <section 
       ref={ref}
       id="reviews" 
       className="py-24 relative overflow-hidden"
@@ -63,14 +63,33 @@ export const Reviews = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-muted/10 to-transparent" />
       
       <div className="container mx-auto px-4 relative z-10">
-        {/* Simplified Header */}
+        {/* Mobile: No animations */}
+        <div className="text-center mb-16 md:hidden">
+          <div 
+            className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-3xl mb-8"
+          >
+            <Star className="w-12 h-12 text-white" />
+          </div>
+          
+          <h2 className="text-4xl lg:text-5xl font-display font-bold mb-8">
+            Customer{" "}
+            <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent">
+              Reviews
+            </span>
+          </h2>
+          
+          <p className="text-xl text-foreground/70 max-w-4xl mx-auto leading-relaxed">
+            See what our users are saying about NexodusAI. Real stories from real people who have transformed their creative workflow.
+          </p>
+        </div>
+
+        {/* Desktop: Keep animations */}
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-16 hidden md:block"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6 }}
         >
-          {/* Simplified Icon */}
           <motion.div 
             className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-3xl mb-8"
             initial={{ scale: 0, rotate: -180 }}
@@ -96,9 +115,79 @@ export const Reviews = () => {
           </p>
         </motion.div>
         
-        {/* Reviews Grid */}
+        {/* Mobile: No animations */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto md:hidden">
+          {reviews.map((review, index) => (
+            <div 
+              key={index} 
+              className="group"
+            >
+              <div className="relative h-full">
+                {/* Card Background */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${review.gradient} rounded-3xl opacity-5 group-hover:opacity-10 transition-opacity duration-500`} />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent rounded-3xl" />
+                <div className="absolute inset-0 backdrop-blur-xl bg-black/20 rounded-3xl border border-white/10" />
+                
+                {/* Content */}
+                <div className="relative z-10 p-8 h-full flex flex-col">
+                  {/* Quote Icon */}
+                  <div 
+                    className="flex items-center justify-between mb-6"
+                  >
+                    <Sparkles className="w-8 h-8 text-foreground/60" />
+                    <div className="text-4xl">
+                      {review.emoji}
+                    </div>
+                  </div>
+                  
+                  {/* Rating */}
+                  <div 
+                    className="flex items-center mb-4"
+                  >
+                    {[...Array(review.rating)].map((_, i) => (
+                      <Star 
+                        key={i} 
+                        className="w-5 h-5 text-yellow-400 fill-current" 
+                      />
+                    ))}
+                  </div>
+                  
+                  {/* Review Content */}
+                  <p 
+                    className="text-foreground/80 leading-relaxed flex-grow mb-6 font-paragraph"
+                  >
+                    "{review.content}"
+                  </p>
+                  
+                  {/* Author Info */}
+                  <div 
+                    className="mt-auto"
+                  >
+                    <div className="flex items-center">
+                      <div className={`w-12 h-12 bg-gradient-to-r ${review.gradient} rounded-full flex items-center justify-center mr-4`}>
+                        <span className="text-white font-bold text-lg">
+                          {review.name.charAt(0)}
+                        </span>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-foreground">
+                          {review.name}
+                        </h4>
+                        <p className="text-foreground/60 text-sm">
+                          {review.role}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop: Keep animations */}
         <motion.div 
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto hidden md:grid"
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
@@ -201,7 +290,7 @@ export const Reviews = () => {
                         </span>
                       </div>
                       <div>
-                        <h4 className="font-display font-bold text-foreground">
+                        <h4 className="font-semibold text-foreground">
                           {review.name}
                         </h4>
                         <p className="text-foreground/60 text-sm">
@@ -210,14 +299,6 @@ export const Reviews = () => {
                       </div>
                     </div>
                   </motion.div>
-                  
-                  {/* Decorative Element */}
-                  <motion.div 
-                    className={`w-16 h-1 bg-gradient-to-r ${review.gradient} rounded-full mt-6`}
-                    initial={{ scaleX: 0 }}
-                    animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-                    transition={{ delay: review.delay + 0.7, duration: 0.8 }}
-                  />
                 </div>
               </div>
             </motion.div>
@@ -269,6 +350,6 @@ export const Reviews = () => {
           </div>
         </motion.div>
       </div>
-    </motion.section>
+    </section>
   );
 }; 

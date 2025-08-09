@@ -94,7 +94,7 @@ export const Pricing = () => {
   };
 
   return (
-    <motion.section 
+    <section 
       ref={ref}
       id="pricing" 
       className="py-24 relative overflow-hidden"
@@ -103,9 +103,30 @@ export const Pricing = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-purple-500/5" />
       
       <div className="container mx-auto px-4 relative z-10">
-        {/* Simplified Header */}
+        {/* Mobile: No animations */}
+        <div className="text-center mb-16 md:hidden">
+          <div 
+            className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-3xl mb-8"
+          >
+            <Sparkles className="w-12 h-12 text-white" />
+          </div>
+          
+          <h2 className="text-4xl lg:text-5xl font-display font-bold mb-8">
+            Credit-Based{" "}
+            <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent">
+              Pricing
+            </span>
+          </h2>
+          
+          <p className="text-xl text-foreground/70 max-w-4xl mx-auto leading-relaxed">
+            Pay only for what you use. Purchase credits and generate 3D models whenever you need them. 
+            No monthly subscriptions, no hidden fees.
+          </p>
+        </div>
+
+        {/* Desktop: Keep animations */}
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-16 hidden md:block"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6 }}
@@ -136,9 +157,106 @@ export const Pricing = () => {
           </p>
         </motion.div>
         
-        {/* Redesigned Pricing Cards */}
+        {/* Mobile: No animations */}
+        <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto md:hidden">
+          {plans.map((plan, index) => (
+            <div
+              key={index}
+              className="h-full"
+            >
+              <div className={`h-full relative group ${
+                plan.popular ? 'lg:scale-105' : ''
+              }`}>
+                {/* Card Background */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${plan.gradient} rounded-3xl opacity-5 group-hover:opacity-10 transition-opacity duration-500`} />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent rounded-3xl" />
+                <div className="absolute inset-0 backdrop-blur-xl bg-black/20 rounded-3xl border border-white/10" />
+                
+                {/* Popular Badge */}
+                {plan.popular && (
+                  <div 
+                    className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-20"
+                  >
+                    <div className="bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 rounded-full text-sm font-semibold text-white flex items-center shadow-lg">
+                      <Star className="w-4 h-4 mr-2" />
+                      Most Popular
+                    </div>
+                  </div>
+                )}
+              
+                {/* Card Content */}
+                <div className="relative z-10 p-8 h-full flex flex-col">
+                  {/* Header */}
+                  <div className="text-center mb-8">
+                    <h3 
+                      className="text-3xl font-display font-bold mb-4 text-foreground"
+                    >
+                      {plan.name}
+                    </h3>
+                    
+                    <p 
+                      className="text-foreground/70 mb-6"
+                    >
+                      {plan.description}
+                    </p>
+                    
+                    <div 
+                      className="mb-6"
+                    >
+                      <div className="flex items-center justify-center mb-2">
+                        <span className="text-5xl font-display font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                          {plan.price}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-center text-xl text-foreground/80">
+                        <Zap className="w-6 h-6 text-primary mr-2" />
+                        <span className="font-semibold">{plan.credits} Credits</span>
+                      </div>
+                      {plan.savings && (
+                        <div className="mt-3">
+                          <span className="text-sm bg-green-500/20 text-green-400 px-3 py-1 rounded-full font-medium">
+                            {plan.savings}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+              
+                  {/* Features */}
+                  <div className="space-y-4 mb-8 flex-grow">
+                    {plan.features.map((feature, featureIndex) => (
+                      <div 
+                        key={featureIndex} 
+                        className="flex items-center"
+                      >
+                        <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                          <Check className="w-4 h-4 text-white" />
+                        </div>
+                        <span className="text-foreground/80">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+              
+                  {/* Button */}
+                  <div className="mt-auto">
+                    <Link to="/app">
+                      <Button 
+                        variant={plan.buttonVariant} 
+                        className="w-full h-12 text-lg font-semibold"
+                      >
+                        {plan.buttonText}
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop: Keep animations */}
         <motion.div 
-          className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
+          className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto hidden md:grid"
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
@@ -159,7 +277,7 @@ export const Pricing = () => {
                 <div className="absolute inset-0 backdrop-blur-xl bg-black/20 rounded-3xl border border-white/10" />
                 
                 {/* Popular Badge */}
-              {plan.popular && (
+                {plan.popular && (
                   <motion.div 
                     className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-20"
                     initial={{ opacity: 0, y: -20 }}
@@ -171,12 +289,12 @@ export const Pricing = () => {
                       Most Popular
                     </div>
                   </motion.div>
-              )}
+                )}
               
                 {/* Card Content */}
                 <div className="relative z-10 p-8 h-full flex flex-col">
                   {/* Header */}
-              <div className="text-center mb-8">
+                  <div className="text-center mb-8">
                     <motion.h3 
                       className="text-3xl font-display font-bold mb-4 text-foreground"
                       initial={{ opacity: 0, y: 20 }}
@@ -203,8 +321,8 @@ export const Pricing = () => {
                     >
                       <div className="flex items-center justify-center mb-2">
                         <span className="text-5xl font-display font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                    {plan.price}
-                  </span>
+                          {plan.price}
+                        </span>
                       </div>
                       <div className="flex items-center justify-center text-xl text-foreground/80">
                         <Zap className="w-6 h-6 text-primary mr-2" />
@@ -215,14 +333,14 @@ export const Pricing = () => {
                           <span className="text-sm bg-green-500/20 text-green-400 px-3 py-1 rounded-full font-medium">
                             {plan.savings}
                           </span>
-                </div>
+                        </div>
                       )}
                     </motion.div>
-              </div>
+                  </div>
               
                   {/* Features */}
                   <div className="space-y-4 mb-8 flex-grow">
-                {plan.features.map((feature, featureIndex) => (
+                    {plan.features.map((feature, featureIndex) => (
                       <motion.div 
                         key={featureIndex} 
                         className="flex items-center"
@@ -233,10 +351,10 @@ export const Pricing = () => {
                         <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
                           <Check className="w-4 h-4 text-white" />
                         </div>
-                    <span className="text-foreground/80">{feature}</span>
+                        <span className="text-foreground/80">{feature}</span>
                       </motion.div>
-                ))}
-              </div>
+                    ))}
+                  </div>
               
                   {/* Button */}
                   <motion.div
@@ -245,19 +363,14 @@ export const Pricing = () => {
                     transition={{ delay: index * 0.2 + 1.5, duration: 0.6 }}
                     className="mt-auto"
                   >
-              <Link to="/app">
-              <Button 
-                variant={plan.buttonVariant} 
-                      className={`w-full py-4 text-lg font-semibold rounded-xl transition-all duration-300 ${
-                        plan.popular 
-                          ? 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl' 
-                          : 'bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 shadow-lg hover:shadow-xl'
-                      }`}
-                size="lg"
-              >
-                {plan.buttonText}
-              </Button>
-              </Link>
+                    <Link to="/app">
+                      <Button 
+                        variant={plan.buttonVariant} 
+                        className="w-full h-12 text-lg font-semibold"
+                      >
+                        {plan.buttonText}
+                      </Button>
+                    </Link>
                   </motion.div>
                 </div>
               </div>
@@ -424,6 +537,6 @@ export const Pricing = () => {
           </motion.div>
         </motion.div>
       </div>
-    </motion.section>
+    </section>
   );
 };

@@ -73,7 +73,7 @@ export const FAQ = () => {
   };
 
   return (
-    <motion.section 
+    <section 
       ref={ref}
       id="faq" 
       className="py-24 bg-gradient-to-b from-muted/20 to-background relative overflow-hidden"
@@ -82,9 +82,28 @@ export const FAQ = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-purple-500/5" />
 
       <div className="container mx-auto px-4 relative z-10">
-        {/* Header */}
+        {/* Mobile: No animations */}
+        <div className="text-center mb-16 md:hidden">
+          <div 
+            className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-3xl mb-8"
+          >
+            <HelpCircle className="w-12 h-12 text-white" />
+          </div>
+          
+          <h2 className="text-4xl lg:text-5xl font-bold mb-8">
+            Frequently Asked{" "}
+            <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent">
+              Questions
+            </span>
+          </h2>
+          <p className="text-xl text-foreground/70 max-w-4xl mx-auto leading-relaxed">
+            Everything you need to know about NexodusAI. Can't find what you're looking for?
+          </p>
+        </div>
+
+        {/* Desktop: Keep animations */}
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-16 hidden md:block"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6 }}
@@ -113,9 +132,67 @@ export const FAQ = () => {
           </p>
         </motion.div>
 
-        {/* FAQ Grid */}
+        {/* Mobile: No animations */}
+        <div className="max-w-4xl mx-auto space-y-4 md:hidden">
+          {faqs.map((faq, index) => (
+            <div
+              key={index}
+            >
+              <div
+                className="glass-card border border-primary/10 hover:border-primary/30 transition-all duration-300 overflow-hidden"
+              >
+                {/* Question Header */}
+                <button
+                  className="w-full p-6 text-left flex items-center justify-between group"
+                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                >
+                  <div className="flex items-center gap-4">
+                    <div 
+                      className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center"
+                    >
+                      <faq.icon className="w-6 h-6 text-white" />
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
+                        {faq.question}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div
+                    className="w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20"
+                    style={{ 
+                      transform: openIndex === index ? 'rotate(180deg)' : 'rotate(0deg)',
+                      transition: 'transform 0.3s ease'
+                    }}
+                  >
+                    <ChevronDown className="w-5 h-5 text-foreground" />
+                  </div>
+                </button>
+
+                {/* Answer Content */}
+                {openIndex === index && (
+                  <div
+                    className="overflow-hidden"
+                  >
+                    <div className="px-6 pb-6">
+                      <div className="pt-4 border-t border-primary/10">
+                        <p className="text-foreground/80 leading-relaxed text-lg">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop: Keep animations */}
         <motion.div 
-          className="max-w-4xl mx-auto space-y-4"
+          className="max-w-4xl mx-auto space-y-4 hidden md:block"
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
@@ -241,6 +318,6 @@ export const FAQ = () => {
           </div>
         </motion.div>
       </div>
-    </motion.section>
+    </section>
   );
 }; 
