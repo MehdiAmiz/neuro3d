@@ -272,9 +272,15 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
             <AnimatePresence>
               {isSuccess && (
                 <motion.div
-                  className="absolute inset-0 rounded-3xl flex items-center justify-center z-50"
+                  className="absolute inset-0 rounded-3xl flex items-center justify-center"
                   style={{ 
-                    background: 'linear-gradient(135deg, #22c55e 0%, #10b981 100%)'
+                    background: 'linear-gradient(135deg, #22c55e 0%, #10b981 100%)',
+                    zIndex: 9999,
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0
                   }}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
