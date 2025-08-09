@@ -24,7 +24,7 @@ export default {
           'mono': ['JetBrains Mono', 'monospace'],
           'heading': ['Orbitron', 'Inter', 'system-ui', 'sans-serif'],
           'body': ['Inter', 'system-ui', 'sans-serif'],
-          'paragraph': ['Montserrat', 'system-ui', 'sans-serif']
+          'paragraph': ['Inter', 'system-ui', 'sans-serif']
         },
 			colors: {
 				border: 'hsl(var(--border))',
