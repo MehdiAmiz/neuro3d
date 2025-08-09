@@ -3,13 +3,19 @@ import { Upload, Brain, Download, CheckCircle, Image, Settings, Eye, Video, Zap,
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
+// Import assets
+import step1Image from "@/assets/how-it-works/step1-upload.png";
+import step2Image from "@/assets/how-it-works/step2-upload.png";
+import step3Video from "@/assets/how-it-works/step3-preview.mp4";
+import step4Video from "@/assets/how-it-works/step4-glb.mp4";
+
 const steps = [
   {
     icon: Upload,
     title: "Upload Your Image",
     description: "Start by selecting and uploading a 2D image—whether it's a product photo, a character concept, or any design you want to bring to life. Our AI instantly analyzes the image and automatically removes the background to ensure a clean and seamless 3D transformation. This step ensures that the focus remains on your object without distractions.",
     step: "01",
-    image: "/assets/how-it-works/step1-upload.png",
+    image: step1Image,
     alt: "Upload interface showing drag and drop area",
     isVideo: false,
     gradient: "from-blue-500 to-cyan-500",
@@ -20,7 +26,7 @@ const steps = [
     title: "Intelligent Background Removal",
     description: "Before transforming your 2D image into 3D, our AI performs an advanced background removal process to ensure the highest accuracy and visual quality. This step is crucial in isolating the main subject of your image, eliminating distractions, and ensuring a seamless 3D transformation.",
     step: "02",
-    image: "/assets/how-it-works/step2-upload.png",
+    image: step2Image,
     alt: "Background removal process visualization",
     isVideo: false,
     gradient: "from-purple-500 to-pink-500",
@@ -31,7 +37,7 @@ const steps = [
     title: "Instant 3D Video Preview",
     description: "Once the background is removed, our AI model creates a detailed 3D video preview of your object. This rotating video gives you a complete 360° view, allowing you to inspect the shape, proportions, and accuracy of the generated model. If you're not satisfied with the result, you have the option to regenerate the video until you achieve the best representation of your original image.",
     step: "03",
-    video: "/assets/how-it-works/step3-preview.mp4",
+    video: step3Video,
     alt: "3D video preview with rotating model",
     isVideo: true,
     gradient: "from-green-500 to-emerald-500",
@@ -42,7 +48,7 @@ const steps = [
     title: "Finalize with 3D GLB Conversion",
     description: "After reviewing the video, you can proceed to generate a high-quality GLB 3D file. This file format is widely used in game development, 3D printing, augmented reality (AR), virtual reality (VR), and digital design. The AI optimizes the model for realism while keeping it lightweight and efficient for use in various platforms.",
     step: "04",
-    video: "/assets/how-it-works/step4-glb.mp4",
+    video: step4Video,
     alt: "GLB file generation and download interface",
     isVideo: true,
     gradient: "from-orange-500 to-red-500",
@@ -203,6 +209,9 @@ export const HowItWorks = () => {
                           muted
                           playsInline
                           controls={false}
+                          onError={(e) => {
+                            console.error('Video loading error:', e);
+                          }}
                         />
                       ) : (
                         <motion.img
@@ -220,6 +229,9 @@ export const HowItWorks = () => {
                             rotateX: 3,
                             scale: 1.02,
                             transition: { duration: 0.4 }
+                          }}
+                          onError={(e) => {
+                            console.error('Image loading error:', e);
                           }}
                         />
                       )}
