@@ -30,7 +30,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
 
   return (
     <motion.header 
-      className="fixed top-0 w-full z-50 glass border-b border-white/20"
+      className="fixed top-0 w-full z-50 md:glass md:border-b md:border-white/20"
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
@@ -152,36 +152,46 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
 
           {/* Mobile Menu Button */}
           {shouldShowMobileMenu && (
-            <motion.button
-              className="md:hidden bg-white/10 hover:bg-white/20 p-2 rounded-lg border border-white/20 text-white"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <AnimatePresence mode="wait">
-                {isMenuOpen ? (
-                  <motion.div
-                    key="close"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <X className="w-6 h-6" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="menu"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Menu className="w-6 h-6" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
+            <div className="md:hidden flex items-center space-x-2">
+              <Link to="/app">
+                <Button 
+                  variant="ghost" 
+                  className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-4 py-2 rounded-lg font-medium"
+                >
+                  Studio
+                </Button>
+              </Link>
+              <motion.button
+                className="bg-white/10 hover:bg-white/20 p-2 rounded-lg border border-white/20 text-white"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <AnimatePresence mode="wait">
+                  {isMenuOpen ? (
+                    <motion.div
+                      key="close"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <X className="w-6 h-6" />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="menu"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Menu className="w-6 h-6" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.button>
+            </div>
           )}
         </div>
 
