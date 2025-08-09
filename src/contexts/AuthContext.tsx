@@ -59,10 +59,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setIsLoading(true);
       const userData = await userService.login(email, password);
-      
-      // Save user to localStorage
-      localStorage.setItem('user', JSON.stringify(userData));
-      setUser(userData);
+      // Read-after-write consistency: fetch fresh copy by id
+      const fresh = await userService.getUserById(userData.id);
+      localStorage.setItem('user', JSON.stringify(fresh));
+      setUser(fresh as User);
     } catch (error) {
       throw error;
     } finally {
@@ -74,10 +74,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setIsLoading(true);
       const userData = await userService.register({ name, email, password });
-      
-      // Save user to localStorage
-      localStorage.setItem('user', JSON.stringify(userData));
-      setUser(userData);
+      const fresh = await userService.getUserById(userData.id);
+      localStorage.setItem('user', JSON.stringify(fresh));
+      setUser(fresh as User);
     } catch (error) {
       throw error;
     } finally {
@@ -89,8 +88,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setIsLoading(true);
       const userData = await userService.loginWithGoogle(idToken);
-      localStorage.setItem('user', JSON.stringify(userData));
-      setUser(userData);
+      const fresh = await userService.getUserById(userData.id);
+      localStorage.setItem('user', JSON.stringify(fresh));
+      setUser(fresh as User);
     } catch (error) {
       throw error;
     } finally {
