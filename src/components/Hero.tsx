@@ -105,38 +105,45 @@ export const Hero = () => {
               variants={itemVariants}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              Convert{" "}
-              <motion.span 
-                className="bg-gradient-neural bg-clip-text text-transparent"
-                animate={{ 
-                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] 
-                }}
-                transition={{ 
-                  duration: 3, 
-                  repeat: Infinity, 
-                  ease: "linear" 
-                }}
-                style={{ backgroundSize: "200% 100%" }}
-              >
-                2D Images
-              </motion.span>
-              <br />
-              Into Stunning{" "}
-              <motion.span 
-                className="bg-gradient-primary bg-clip-text text-transparent"
-                animate={{ 
-                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] 
-                }}
-                transition={{ 
-                  duration: 4, 
-                  repeat: Infinity, 
-                  ease: "linear",
-                  delay: 0.5
-                }}
-                style={{ backgroundSize: "200% 100%" }}
-              >
-                3D Models
-              </motion.span>
+              <div className="block">
+                Convert
+              </div>
+              <div className="block">
+                <motion.span 
+                  className="bg-gradient-neural bg-clip-text text-transparent"
+                  animate={{ 
+                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] 
+                  }}
+                  transition={{ 
+                    duration: 3, 
+                    repeat: Infinity, 
+                    ease: "linear" 
+                  }}
+                  style={{ backgroundSize: "200% 100%" }}
+                >
+                  2D Images
+                </motion.span>
+              </div>
+              <div className="block">
+                Into Stunning
+              </div>
+              <div className="block">
+                <motion.span 
+                  className="bg-gradient-primary bg-clip-text text-transparent"
+                  animate={{ 
+                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] 
+                  }}
+                  transition={{ 
+                    duration: 4, 
+                    repeat: Infinity, 
+                    ease: "linear",
+                    delay: 0.5
+                  }}
+                  style={{ backgroundSize: "200% 100%" }}
+                >
+                  3D Models
+                </motion.span>
+              </div>
             </motion.h1>
             
             <p className="text-xl text-foreground/80 mb-8 max-w-3xl mx-auto leading-relaxed">
