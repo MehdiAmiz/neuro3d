@@ -145,7 +145,7 @@ export const Hero = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <Link to="/app">
-                  <Button variant="glow" size="lg" className="group glass-card neon-glow">
+                  <Button variant="glow" size="lg" className="group glass-card neon-glow text-xl">
                     <Upload className="w-5 h-5 mr-2" />
                     Upload Image
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -156,7 +156,7 @@ export const Hero = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button variant="outline" size="lg" className="group glass-card">
+                <Button variant="outline" size="lg" className="group glass-card text-xl">
                   <Play className="w-5 h-5 mr-2" />
                   Watch Demo
                 </Button>
