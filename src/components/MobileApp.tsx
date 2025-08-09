@@ -62,18 +62,11 @@ export const MobileApp = () => {
           transition={{ duration: 0.6 }}
         >
           {/* Main Section Icon */}
-          <motion.div 
+          <div 
             className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-3xl mb-8"
-            initial={{ scale: 0, rotate: -180 }}
-            animate={isInView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }}
-            transition={{ delay: 0.2, duration: 0.6, type: "spring" }}
-            whileHover={{ 
-              scale: 1.05,
-              boxShadow: "0 0 30px rgba(59, 130, 246, 0.4)"
-            }}
           >
             <Smartphone className="w-12 h-12 text-white" />
-          </motion.div>
+          </div>
           
           <h2 className="text-4xl lg:text-5xl font-display font-bold mb-8">
             Mobile App{" "}
@@ -136,32 +129,7 @@ export const MobileApp = () => {
                     </div>
                   </div>
                   
-                  {/* Floating Elements */}
-                  <motion.div 
-                    className="absolute top-4 right-4 w-3 h-3 bg-blue-400 rounded-full"
-                    animate={{ 
-                      scale: [1, 1.2, 1],
-                      opacity: [0.5, 1, 0.5]
-                    }}
-                    transition={{ 
-                      duration: 2, 
-                      repeat: Infinity, 
-                      ease: "easeInOut" 
-                    }}
-                  />
-                  <motion.div 
-                    className="absolute bottom-8 left-6 w-2 h-2 bg-purple-400 rounded-full"
-                    animate={{ 
-                      scale: [1, 1.3, 1],
-                      opacity: [0.3, 0.8, 0.3]
-                    }}
-                    transition={{ 
-                      duration: 3, 
-                      repeat: Infinity, 
-                      ease: "easeInOut",
-                      delay: 1
-                    }}
-                  />
+                  {/* Removed floating elements for mobile performance */}
                 </div>
               </div>
               

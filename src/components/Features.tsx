@@ -79,18 +79,11 @@ export const Features = () => {
           transition={{ duration: 0.6 }}
         >
           {/* Simplified Main Section Icon */}
-          <motion.div 
+          <div 
             className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-3xl mb-8"
-            initial={{ scale: 0, rotate: -180 }}
-            animate={isInView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }}
-            transition={{ delay: 0.2, duration: 0.6, type: "spring" }}
-            whileHover={{ 
-              scale: 1.05,
-              boxShadow: "0 0 30px rgba(59, 130, 246, 0.4)"
-            }}
           >
             <Sparkles className="w-12 h-12 text-white" />
-          </motion.div>
+          </div>
           
           <h2 className="text-4xl lg:text-5xl font-display font-bold mb-8">
             Next-Gen{" "}

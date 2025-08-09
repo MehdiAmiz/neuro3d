@@ -46,40 +46,10 @@ export const Hero = () => {
       className="min-h-screen flex items-center justify-center relative overflow-hidden"
       style={{ opacity }}
     >
-      {/* Animated Background */}
-      <motion.div 
-        className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/30"
-        style={{ y }}
-      />
+      {/* Static Background - removed animation for mobile performance */}
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/30" />
       
-      {/* Glassmorphism floating elements */}
-      <motion.div 
-        className="absolute top-20 left-10 w-32 h-32 glass rounded-full blur-xl"
-        animate={{ 
-          y: [0, -20, 0],
-          rotate: [0, 180, 360]
-        }}
-        transition={{ 
-          duration: 8, 
-          repeat: Infinity, 
-          ease: "easeInOut" 
-        }}
-        style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-100%"]) }}
-      />
-      <motion.div 
-        className="absolute bottom-20 right-10 w-48 h-48 glass rounded-full blur-xl"
-        animate={{ 
-          y: [0, 20, 0],
-          rotate: [360, 180, 0]
-        }}
-        transition={{ 
-          duration: 10, 
-          repeat: Infinity, 
-          ease: "easeInOut",
-          delay: 2
-        }}
-        style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]) }}
-      />
+      {/* Removed glassmorphism floating elements for mobile performance */}
       
       <div className="container mx-auto px-4 py-20 relative z-10">
         <motion.div 
@@ -93,8 +63,6 @@ export const Hero = () => {
               className="inline-flex items-center px-4 py-2 rounded-full glass-card border border-primary/20 mb-6 neon-glow"
               variants={itemVariants}
               transition={{ duration: 0.8 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
             >
               <Sparkles className="w-4 h-4 mr-2 text-primary" />
               <span className="text-sm text-foreground/80">AI-Powered 2D to 3D Conversion</span>
@@ -109,40 +77,17 @@ export const Hero = () => {
                 Convert
               </div>
               <div className="block">
-                <motion.span 
-                  className="bg-gradient-neural bg-clip-text text-transparent"
-                  animate={{ 
-                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] 
-                  }}
-                  transition={{ 
-                    duration: 3, 
-                    repeat: Infinity, 
-                    ease: "linear" 
-                  }}
-                  style={{ backgroundSize: "200% 100%" }}
-                >
+                <span className="bg-gradient-neural bg-clip-text text-transparent">
                   2D Images
-                </motion.span>
+                </span>
               </div>
               <div className="block">
                 Into Stunning
               </div>
               <div className="block">
-                <motion.span 
-                  className="bg-gradient-primary bg-clip-text text-transparent"
-                  animate={{ 
-                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] 
-                  }}
-                  transition={{ 
-                    duration: 4, 
-                    repeat: Infinity, 
-                    ease: "linear",
-                    delay: 0.5
-                  }}
-                  style={{ backgroundSize: "200% 100%" }}
-                >
+                <span className="bg-gradient-primary bg-clip-text text-transparent">
                   3D Models
-                </motion.span>
+                </span>
               </div>
             </motion.h1>
             
@@ -248,56 +193,20 @@ export const Hero = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent rounded-2xl" />
             </motion.div>
             
-            {/* Glassmorphism floating UI Elements */}
-            <motion.div 
-              className="absolute -top-4 -right-4 glass-card backdrop-blur-sm border border-primary/20 rounded-lg p-3 neon-glow"
-              initial={{ opacity: 0, y: -20, scale: 0.8 }}
-              animate={{ 
-                opacity: 1, 
-                y: [0, -10, 0], 
-                scale: 1 
-              }}
-              transition={{ 
-                opacity: { delay: 1.2, duration: 0.5 },
-                scale: { delay: 1.2, duration: 0.5 },
-                y: { duration: 3, repeat: Infinity, ease: "easeInOut" }
-              }}
-              whileHover={{ scale: 1.1, y: -5 }}
-            >
+            {/* Simplified floating UI Elements */}
+            <div className="absolute -top-4 -right-4 glass-card backdrop-blur-sm border border-primary/20 rounded-lg p-3 neon-glow">
               <div className="text-xs text-foreground/60">Processing</div>
-              <motion.div 
-                className="text-sm font-semibold text-primary"
-                animate={{ opacity: [0.7, 1, 0.7] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
+              <div className="text-sm font-semibold text-primary">
                 98% Complete
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
             
-            <motion.div 
-              className="absolute -bottom-4 -left-4 glass-card backdrop-blur-sm border border-accent/20 rounded-lg p-3 neon-glow-cyan"
-              initial={{ opacity: 0, y: 20, scale: 0.8 }}
-              animate={{ 
-                opacity: 1, 
-                y: [0, 10, 0], 
-                scale: 1 
-              }}
-              transition={{ 
-                opacity: { delay: 1.4, duration: 0.5 },
-                scale: { delay: 1.4, duration: 0.5 },
-                y: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 2 }
-              }}
-              whileHover={{ scale: 1.1, y: 5 }}
-            >
+            <div className="absolute -bottom-4 -left-4 glass-card backdrop-blur-sm border border-accent/20 rounded-lg p-3 neon-glow-cyan">
               <div className="text-xs text-foreground/60">Quality</div>
-              <motion.div 
-                className="text-sm font-semibold text-accent"
-                animate={{ opacity: [0.7, 1, 0.7] }}
-                transition={{ duration: 2.5, repeat: Infinity, delay: 1 }}
-              >
+              <div className="text-sm font-semibold text-accent">
                 Ultra HD
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </motion.div>
         </motion.div>
       </div>

@@ -93,27 +93,18 @@ export const HowItWorks = () => {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6 }}
         >
-          <motion.div 
+          <div 
             className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-3xl mb-8"
-            initial={{ scale: 0, rotate: -180 }}
-            animate={isInView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }}
-            transition={{ delay: 0.2, duration: 0.6, type: "spring" }}
-            whileHover={{ 
-              scale: 1.05,
-              boxShadow: "0 0 30px rgba(59, 130, 246, 0.4)"
-            }}
           >
             <Sparkles className="w-12 h-12 text-white" />
-          </motion.div>
+          </div>
           
-          <motion.h2 
+          <h2 
             className="text-4xl md:text-5xl font-bold text-center mb-4 bg-gradient-primary bg-clip-text text-transparent"
-            variants={itemVariants}
-            transition={{ duration: 0.8, delay: 0.2 }}
           >
             How NexodusAI{" "}
             <span className="text-foreground">Works</span>
-          </motion.h2>
+          </h2>
           
           <p className="text-xl text-foreground/70 max-w-4xl mx-auto leading-relaxed">
             Transform your 2D images into stunning 3D models in just four simple steps. 
@@ -156,54 +147,24 @@ export const HowItWorks = () => {
                   transition={{ delay: index * 0.3 + 0.5, duration: 1, ease: "easeOut" }}
                 >
                   <div className="relative group">
-                    {/* Enhanced Background Glow */}
-                    <motion.div 
-                      className={`absolute inset-0 bg-gradient-to-r ${step.gradient} rounded-3xl opacity-20 group-hover:opacity-30 transition-opacity blur-2xl`}
-                      animate={{ 
-                        scale: [1, 1.1, 1],
-                        rotate: [0, 5, 0]
-                      }}
-                      transition={{ 
-                        duration: 8, 
-                        repeat: Infinity, 
-                        ease: "easeInOut",
-                        delay: index * 0.5
-                      }}
+                    {/* Simplified Background Glow */}
+                    <div 
+                      className={`absolute inset-0 bg-gradient-to-r ${step.gradient} rounded-3xl opacity-20 blur-2xl`}
                     />
                     
                     {/* Step Number Badge */}
-                    <motion.div 
+                    <div 
                       className={`absolute -top-6 -left-6 w-16 h-16 bg-gradient-to-r ${step.gradient} rounded-2xl flex items-center justify-center z-30 neon-glow`}
-                  initial={{ scale: 0, rotate: -180 }}
-                  animate={isInView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }}
-                      transition={{ delay: index * 0.3 + 0.8, duration: 0.6, type: "spring" }}
-                      whileHover={{ 
-                        scale: 1.1,
-                        rotate: 10,
-                        boxShadow: "0 0 30px rgba(var(--primary), 0.8)"
-                      }}
                     >
                       <span className="text-white font-bold text-xl font-display">{step.step}</span>
-                    </motion.div>
+                    </div>
                     
                     {/* Media Content */}
                     <div className="relative z-10">
                       {step.isVideo ? (
-                        <motion.video
+                        <video
                           src={step.video}
                           className="w-full h-auto rounded-3xl shadow-2xl border border-primary/20 glass-card"
-                          initial={{ opacity: 0, scale: 0.8, rotateY: index % 2 === 1 ? 20 : -20 }}
-                          animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-                          transition={{ 
-                            duration: 1.2,
-                            delay: index * 0.3 + 1
-                          }}
-                          whileHover={{ 
-                            rotateY: index % 2 === 1 ? -8 : 8,
-                            rotateX: 3,
-                            scale: 1.02,
-                            transition: { duration: 0.4 }
-                          }}
                           autoPlay
                           loop
                           muted
@@ -214,22 +175,10 @@ export const HowItWorks = () => {
                           }}
                         />
                       ) : (
-                        <motion.img
+                        <img
                           src={step.image}
                           alt={step.alt}
                           className="w-full h-auto rounded-3xl shadow-2xl border border-primary/20 glass-card"
-                          initial={{ opacity: 0, scale: 0.8, rotateY: index % 2 === 1 ? 20 : -20 }}
-                          animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-                          transition={{ 
-                            duration: 1.2,
-                            delay: index * 0.3 + 1
-                          }}
-                          whileHover={{ 
-                            rotateY: index % 2 === 1 ? -8 : 8,
-                            rotateX: 3,
-                            scale: 1.02,
-                            transition: { duration: 0.4 }
-                          }}
                           onError={(e) => {
                             console.error('Image loading error:', e);
                           }}

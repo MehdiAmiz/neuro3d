@@ -21,76 +21,14 @@ const queryClient = new QueryClient();
 // Animated Background Component
 const AnimatedBackground = () => (
   <div className="fixed inset-0 -z-10 overflow-hidden">
-    {/* Animated gradient background */}
-    <motion.div 
-      className="absolute inset-0 bg-gradient-cyber opacity-20"
-      animate={{ 
-        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] 
-      }}
-      transition={{ 
-        duration: 20, 
-        repeat: Infinity, 
-        ease: "linear" 
-      }}
-      style={{ backgroundSize: "400% 400%" }}
-    />
+    {/* Static gradient background - removed animation for mobile performance */}
+    <div className="absolute inset-0 bg-gradient-cyber opacity-20" />
     
-    {/* Floating particles */}
-    <div className="particles-bg">
-      {[...Array(12)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="particle"
-          animate={{
-            y: [0, -30, 0],
-            x: [0, Math.random() * 20 - 10, 0],
-            opacity: [0.3, 0.8, 0.3],
-            scale: [1, 1.2, 1]
-          }}
-          transition={{
-            duration: 8 + Math.random() * 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: Math.random() * 2
-          }}
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            width: `${4 + Math.random() * 6}px`,
-            height: `${4 + Math.random() * 6}px`
-          }}
-        />
-      ))}
-    </div>
+    {/* Removed floating particles for mobile performance */}
     
-    {/* Glassmorphism orbs */}
-    <motion.div 
-      className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-glass rounded-full blur-3xl opacity-30"
-      animate={{ 
-        y: [0, -50, 0],
-        scale: [1, 1.2, 1],
-        rotate: [0, 180, 360]
-      }}
-      transition={{ 
-        duration: 15, 
-        repeat: Infinity, 
-        ease: "easeInOut" 
-      }}
-    />
-    <motion.div 
-      className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-neon rounded-full blur-3xl opacity-20"
-      animate={{ 
-        y: [0, 40, 0],
-        scale: [1, 0.8, 1],
-        rotate: [360, 180, 0]
-      }}
-      transition={{ 
-        duration: 18, 
-        repeat: Infinity, 
-        ease: "easeInOut",
-        delay: 3
-      }}
-    />
+    {/* Simplified glassmorphism orbs - reduced animation complexity */}
+    <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-glass rounded-full blur-3xl opacity-30" />
+    <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-neon rounded-full blur-3xl opacity-20" />
   </div>
 );
 
