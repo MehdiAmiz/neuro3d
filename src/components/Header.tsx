@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Menu, X, User, LogOut, Settings, Home, AppWindow, Zap, Star, CreditCard, MessageCircle, HelpCircle, Mail } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { AuthModal } from "./AuthModal";
@@ -15,6 +15,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
   
@@ -23,6 +24,17 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
   const isOnProfilePage = location.pathname === '/profile';
   const shouldShowMobileMenu = true; // Always show mobile menu on mobile devices
 
+  // Handle scroll detection
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrolled = window.scrollY > 10;
+      setIsScrolled(scrolled);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const handleLogout = () => {
     logout();
     setShowUserMenu(false);
@@ -30,7 +42,11 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
 
   return (
     <motion.header 
-      className="fixed top-0 w-full z-50"
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        isScrolled 
+          ? 'bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-lg' 
+          : 'bg-transparent'
+      }`}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
