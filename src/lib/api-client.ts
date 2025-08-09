@@ -31,24 +31,13 @@ class ApiClient {
 
     try {
       const response = await fetch(url, { ...defaultOptions, ...options, credentials: 'omit', cache: 'no-store' });
-      const contentType = response.headers.get('content-type') || '';
-
-      if (contentType.includes('application/json')) {
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error((data as any).error || `HTTP ${response.status}`);
-        }
-        return data;
-      } else {
-        const text = await response.text();
-        if (!response.ok) {
-          // Bubble up server text error safely
-          const message = text?.slice(0, 500) || `HTTP ${response.status}`;
-          throw new Error(message);
-        }
-        // Non-JSON success response – wrap minimally
-        return { success: true, data: text } as unknown as ApiResponse<T>;
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || `HTTP ${response.status}`);
       }
+      
+      return data;
     } catch (error) {
       console.error(`API request failed for ${endpoint}:`, error);
       throw error;
@@ -93,9 +82,8 @@ class ApiClient {
     return this.request(`/users/${id}`, {
       method: 'PUT',
       body: JSON.stringify({
-        // Only allow expected fields
-        ...(typeof updates?.name === 'string' ? { name: updates.name } : {}),
-        ...(typeof updates?.email === 'string' ? { email: updates.email } : {}),
+        name: typeof updates.name === 'string' ? updates.name : undefined,
+        email: typeof updates.email === 'string' ? updates.email : undefined,
       }),
     });
   }

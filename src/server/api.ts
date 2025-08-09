@@ -120,10 +120,15 @@ router.get('/users/:id', async (req, res) => {
 router.put('/users/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email } = req.body as { name?: string; email?: string };
 
-    // Basic validation & sanitization
+    if (!req.is('application/json')) {
+      return res.status(415).json({ success: false, error: 'Content-Type must be application/json' });
+    }
+
+    const { name, email } = req.body as { name?: unknown; email?: unknown };
+
     const updates: Record<string, any> = {};
+
     if (typeof name === 'string') {
       const trimmed = name.trim();
       if (trimmed.length < 1 || trimmed.length > 255) {
@@ -131,6 +136,7 @@ router.put('/users/:id', async (req, res) => {
       }
       updates.name = trimmed;
     }
+
     if (typeof email === 'string') {
       const trimmed = email.trim();
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -143,6 +149,7 @@ router.put('/users/:id', async (req, res) => {
     if (Object.keys(updates).length === 0) {
       return res.status(400).json({ success: false, error: 'No valid fields to update' });
     }
+
     const user = await userService.updateUser(id, updates);
     res.status(200).json({ success: true, user });
   } catch (error) {

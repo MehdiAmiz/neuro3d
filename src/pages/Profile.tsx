@@ -124,8 +124,8 @@ const Profile: React.FC = () => {
     setIsLoading(true);
     try {
       const updatedUser = await userService.updateUser(user.id, {
-        name: formData.name,
-        email: formData.email
+        name: String(formData.name ?? '').trim(),
+        email: String(formData.email ?? '').trim(),
       });
       
       // Update user data in localStorage and context
@@ -137,8 +137,8 @@ const Profile: React.FC = () => {
       });
       
       setIsEditing(false);
-      // Refresh the page to update the user context
-      window.location.reload();
+      // Refresh the user context without full reload
+      await refreshUser();
     } catch (error) {
       toast({
         title: "Error",
