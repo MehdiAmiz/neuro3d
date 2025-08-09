@@ -169,26 +169,37 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   const handleGoogleSignIn = async () => {
     try {
       setIsLoading(true);
+      setError(null);
+      
       // Ensure Google script has been loaded
       const { google } = window as any;
       if (!google || !google.accounts || !google.accounts.id) {
-        throw new Error('Google Identity not loaded');
+        throw new Error('Google Identity not loaded. Please refresh the page and try again.');
+      }
+
+      // Check if client ID is configured
+      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+      if (!clientId) {
+        throw new Error('Google client ID not configured');
       }
 
       // Use the prompt flow via button click
       await new Promise<void>((resolve, reject) => {
         try {
           google.accounts.id.initialize({
-            client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+            client_id: clientId,
             callback: async (response: any) => {
               try {
                 const idToken = response.credential;
-                if (!idToken) throw new Error('No credential returned');
+                if (!idToken) throw new Error('No credential returned from Google');
+                
+                console.log('Google ID token received, calling loginWithGoogle...');
                 await loginWithGoogle(idToken);
                 setIsSuccess(true);
                 setTimeout(() => onClose(), 800);
                 resolve();
               } catch (e) {
+                console.error('Error in Google callback:', e);
                 reject(e);
               }
             },
@@ -200,7 +211,8 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
         }
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Google sign-in failed');
+      console.error('Google Sign-In error:', err);
+      setError(err instanceof Error ? err.message : 'Google sign-in failed. Please try again.');
     } finally {
       setIsLoading(false);
     }

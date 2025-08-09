@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import crypto from 'crypto';
+import dotenv from 'dotenv';
+dotenv.config();
 import apiRouter from './api';
 import postgresDb from '../lib/postgres-database';
 
@@ -11,7 +13,12 @@ const PORT = process.env.PORT || 8080;
 const WEBHOOK_SECRET = '1f196232a000ca9b51e3c3f308d0388a';
 
 // Enable CORS
-app.use(cors());
+app.use(cors({
+  origin: ['http://91.108.112.113', 'http://91.108.112.113:8080', 'http://localhost:5173', 'http://localhost:3000'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
 
 // Parse JSON bodies for API routes
 app.use(express.json());

@@ -1,5 +1,5 @@
 // API client for communicating with the unified server
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://nexodusai.com/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://91.108.112.113:8080/api';
 
 interface ApiResponse<T> {
   success: boolean;
