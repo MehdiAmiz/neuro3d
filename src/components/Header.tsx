@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Menu, X, User, LogOut, Settings } from "lucide-react";
+import { Menu, X, User, LogOut, Settings, Home, AppWindow } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
@@ -197,8 +197,8 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                 transition={{ duration: 0.3, ease: "easeInOut" }}
               >
                 <div className="flex flex-col space-y-4 pt-4 px-4">
-                  {/* Show navigation links only on non-App pages */}
-                  {!isOnAppPage && [
+                  {/* Show full navigation only on homepage */}
+                  {!isOnAppPage && !isOnProfilePage && [
                     { href: "#hero", label: "Home", isLink: false },
                     { href: "/app", label: "App", isLink: true },
                     { href: "#features", label: "Features", isLink: false },
@@ -231,77 +231,92 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                     )
                   ))}
                   
-                  {/* Show page-specific navigation for App and Profile pages */}
-                  {isOnAppPage && (
-                    <div className="space-y-2">
-                      <Link to="/" className="text-white hover:text-blue-300 transition-colors py-2 block font-medium">
-                        ← Back to Home
+                  {/* Simplified menu for App and Profile pages */}
+                  {(isOnAppPage || isOnProfilePage) && (
+                    <div className="space-y-3">
+                      <Link 
+                        to="/" 
+                        className="flex items-center space-x-3 text-white hover:text-blue-300 transition-colors py-3 font-medium"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <Home className="w-5 h-5" />
+                        <span>Home</span>
                       </Link>
-                      <Link to="/profile" className="text-white hover:text-blue-300 transition-colors py-2 block font-medium">
-                        Profile
+                      
+                      <Link 
+                        to="/app" 
+                        className="flex items-center space-x-3 text-white hover:text-blue-300 transition-colors py-3 font-medium"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <AppWindow className="w-5 h-5" />
+                        <span>App</span>
                       </Link>
-                    </div>
-                  )}
-                  
-                  {isOnProfilePage && (
-                    <div className="space-y-2">
-                      <Link to="/" className="text-white hover:text-blue-300 transition-colors py-2 block font-medium">
-                        ← Back to Home
-                      </Link>
-                      <Link to="/app" className="text-white hover:text-blue-300 transition-colors py-2 block font-medium">
-                        App
-                      </Link>
-                    </div>
-                  )}
-                  
-                  <div className="flex flex-col space-y-2 pt-4">
-                    {isAuthenticated ? (
-                      <>
-                        <div className="flex items-center space-x-2 px-3 py-2 bg-white/10 rounded-lg border border-white/20">
-                          <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
-                            <User className="w-4 h-4 text-white" />
-                          </div>
-                          <div>
-                            <p className="text-white font-medium text-sm">{user?.name}</p>
-                            <p className="text-gray-300 text-xs">{user?.email}</p>
-                          </div>
-                        </div>
-                        <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
-                          <Button variant="ghost" className="bg-white/10 hover:bg-white/20 text-white border border-white/20 w-full">
-                            <Settings className="w-4 h-4 mr-2" />
-                            Profile
-                          </Button>
-                        </Link>
+                      
+                      {isAuthenticated && (
                         <Button 
                           variant="ghost" 
-                          className="bg-white/10 hover:bg-white/20 text-white border border-white/20"
+                          className="flex items-center space-x-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 w-full justify-start"
                           onClick={() => {
                             handleLogout();
                             setIsMenuOpen(false);
                           }}
                         >
-                          <LogOut className="w-4 h-4 mr-2" />
-                          Sign Out
+                          <LogOut className="w-5 h-5" />
+                          <span>Sign Out</span>
                         </Button>
-                      </>
-                    ) : (
-                      <Button 
-                        variant="ghost" 
-                        className="bg-white/10 hover:bg-white/20 text-white border border-white/20"
-                        onClick={() => {
-                          setIsAuthModalOpen(true);
-                          setIsMenuOpen(false);
-                        }}
-                      >
-                        Sign In
-                      </Button>
-                    )}
-                    {!isOnAppPage && (
+                      )}
+                    </div>
+                  )}
+                  
+                  {/* Show user info and additional options only on homepage */}
+                  {!isOnAppPage && !isOnProfilePage && (
+                    <div className="flex flex-col space-y-2 pt-4">
+                      {isAuthenticated ? (
+                        <>
+                          <div className="flex items-center space-x-2 px-3 py-2 bg-white/10 rounded-lg border border-white/20">
+                            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                              <User className="w-4 h-4 text-white" />
+                            </div>
+                            <div>
+                              <p className="text-white font-medium text-sm">{user?.name}</p>
+                              <p className="text-gray-300 text-xs">{user?.email}</p>
+                            </div>
+                          </div>
+                          <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
+                            <Button variant="ghost" className="bg-white/10 hover:bg-white/20 text-white border border-white/20 w-full">
+                              <Settings className="w-4 h-4 mr-2" />
+                              Profile
+                            </Button>
+                          </Link>
+                          <Button 
+                            variant="ghost" 
+                            className="bg-white/10 hover:bg-white/20 text-white border border-white/20"
+                            onClick={() => {
+                              handleLogout();
+                              setIsMenuOpen(false);
+                            }}
+                          >
+                            <LogOut className="w-4 h-4 mr-2" />
+                            Sign Out
+                          </Button>
+                        </>
+                      ) : (
+                        <Button 
+                          variant="ghost" 
+                          className="bg-white/10 hover:bg-white/20 text-white border border-white/20"
+                          onClick={() => {
+                            setIsAuthModalOpen(true);
+                            setIsMenuOpen(false);
+                          }}
+                        >
+                          Sign In
+                        </Button>
+                      )}
                       <Link to="/app" onClick={() => setIsMenuOpen(false)}>
                         <Button variant="neural" className="glass-card neon-glow w-full">Start Converting</Button>
                       </Link>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </motion.nav>
             )}
