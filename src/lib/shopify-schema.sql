@@ -42,22 +42,6 @@ CREATE TABLE IF NOT EXISTS shopify_orders (
   payment_details JSONB,
   refunds JSONB,
   customer_locale VARCHAR(10),
-  app_id BIGINT,
-  browser_ip VARCHAR(45),
-  landing_site VARCHAR(500),
-  landing_site_ref VARCHAR(255),
-  referring_site VARCHAR(500),
-  user_agent TEXT,
-  location_id BIGINT,
-  shipping_address JSONB,
-  billing_address JSONB,
-  line_items JSONB,
-  shipping_lines JSONB,
-  discount_codes JSONB,
-  tax_lines JSONB,
-  payment_details JSONB,
-  refunds JSONB,
-  customer_locale VARCHAR(10),
   app_id BIGINT
 );
 
@@ -97,7 +81,7 @@ CREATE TABLE IF NOT EXISTS shopify_transactions (
   error_code VARCHAR(100),
   error_message TEXT,
   receipt JSONB,
-  authorization VARCHAR(255),
+  auth_code VARCHAR(255),
   parent_id BIGINT,
   test BOOLEAN DEFAULT FALSE
 );
