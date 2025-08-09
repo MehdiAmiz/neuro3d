@@ -1,11 +1,20 @@
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import { OAuth2Client } from 'google-auth-library';
 import { userService } from '../lib/postgres-database';
 
 const router = express.Router();
 
+// Basic rate limiting for auth and user endpoints
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+});
+
 // Middleware to parse JSON
-router.use(express.json());
+router.use(express.json({ limit: '1mb' }));
+router.use('/auth', authLimiter);
+router.use('/users', authLimiter);
 
 // Health check endpoint
 router.get('/health', (req, res) => {

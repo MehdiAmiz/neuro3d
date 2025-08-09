@@ -23,12 +23,14 @@ class ApiClient {
     const defaultOptions: RequestInit = {
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
         ...options.headers,
       },
+      method: options.method || 'GET',
     };
 
     try {
-      const response = await fetch(url, { ...defaultOptions, ...options });
+      const response = await fetch(url, { ...defaultOptions, ...options, credentials: 'omit', cache: 'no-store' });
       const data = await response.json();
       
       if (!response.ok) {

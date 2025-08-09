@@ -62,7 +62,9 @@ export class PostgresDatabase {
   }
 
   async updateUser(id: string, updates: Partial<User>): Promise<User | null> {
-    const fields = Object.keys(updates).filter(key => key !== 'id' && key !== 'created_at');
+    const fields = Object.keys(updates)
+      .filter(key => key !== 'id' && key !== 'created_at')
+      .filter(key => (updates as any)[key] !== undefined);
     if (fields.length === 0) return this.getUserById(id);
 
     const setClause = fields.map((field, index) => `${field} = $${index + 2}`).join(', ');

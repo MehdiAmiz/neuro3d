@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import crypto from 'crypto';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -12,6 +13,11 @@ const PORT = process.env.PORT || 8080;
 // Your Shopify webhook secret
 const WEBHOOK_SECRET = '1f196232a000ca9b51e3c3f308d0388a';
 
+// Security headers
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+}));
+
 // Enable CORS
 app.use(cors({
   origin: ['http://91.108.112.113', 'http://91.108.112.113:8080', 'http://localhost:5173', 'http://localhost:3000'],
@@ -20,8 +26,8 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
-// Parse JSON bodies for API routes
-app.use(express.json());
+// Parse JSON bodies for API routes with size limits
+app.use(express.json({ limit: '1mb' }));
 
 // Verify Shopify webhook signature
 const verifyShopifyWebhook = (data: string, hmac: string): boolean => {

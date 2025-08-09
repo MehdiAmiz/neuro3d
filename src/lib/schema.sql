@@ -19,6 +19,11 @@ CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 -- Optional index for Google ID lookups
 CREATE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id);
 
+-- Prevent extremely long names/emails
+ALTER TABLE IF EXISTS users
+  ALTER COLUMN email TYPE VARCHAR(255),
+  ALTER COLUMN name TYPE VARCHAR(255);
+
 -- Create function to update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
