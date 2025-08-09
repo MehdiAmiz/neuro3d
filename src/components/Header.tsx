@@ -156,8 +156,9 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
               <Link to="/app">
                 <Button 
                   variant="ghost" 
-                  className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-4 py-2 rounded-lg font-medium"
+                  className="bg-gradient-to-r from-blue-600/90 via-purple-600/90 to-cyan-500/90 hover:from-blue-500 hover:via-purple-500 hover:to-cyan-400 text-white border border-white/20 px-4 py-2 rounded-xl font-medium shadow-lg shadow-blue-500/25 backdrop-blur-sm transition-all duration-300 hover:shadow-blue-500/40 hover:scale-105"
                 >
+                  <Zap className="w-4 h-4 mr-2" />
                   Studio
                 </Button>
               </Link>

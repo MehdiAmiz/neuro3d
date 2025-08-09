@@ -105,21 +105,23 @@ export const Hero = () => {
               variants={itemVariants}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              Convert{" "}
-              <motion.span 
-                className="bg-gradient-neural bg-clip-text text-transparent"
-                animate={{ 
-                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] 
-                }}
-                transition={{ 
-                  duration: 3, 
-                  repeat: Infinity, 
-                  ease: "linear" 
-                }}
-                style={{ backgroundSize: "200% 100%" }}
-              >
-                2D Images
-              </motion.span>
+              <span>
+                Convert{" "}
+                <motion.span 
+                  className="bg-gradient-neural bg-clip-text text-transparent"
+                  animate={{ 
+                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] 
+                  }}
+                  transition={{ 
+                    duration: 3, 
+                    repeat: Infinity, 
+                    ease: "linear" 
+                  }}
+                  style={{ backgroundSize: "200% 100%" }}
+                >
+                  2D Images
+                </motion.span>
+              </span>
               <br />
               Into Stunning{" "}
               <motion.span 
