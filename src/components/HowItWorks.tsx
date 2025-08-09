@@ -77,7 +77,7 @@ export const HowItWorks = () => {
   };
 
   return (
-    <motion.section 
+    <section 
       ref={ref}
       id="how-it-works" 
       className="py-24 bg-gradient-to-b from-background via-background/95 to-muted/10 relative overflow-hidden"
@@ -86,9 +86,30 @@ export const HowItWorks = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-purple-500/5" />
       
       <div className="container mx-auto px-4 relative z-10">
-        {/* Simplified Header */}
+        {/* Mobile: No animations */}
+        <div className="text-center mb-16 md:hidden">
+          <div 
+            className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-3xl mb-8"
+          >
+            <Sparkles className="w-12 h-12 text-white" />
+          </div>
+          
+          <h2 
+            className="text-4xl md:text-5xl font-bold text-center mb-4 bg-gradient-primary bg-clip-text text-transparent"
+          >
+            How NexodusAI{" "}
+            <span className="text-foreground">Works</span>
+          </h2>
+          
+          <p className="text-xl text-foreground/70 max-w-4xl mx-auto leading-relaxed">
+            Transform your 2D images into stunning 3D models in just four simple steps. 
+            Our AI handles the complex work while you focus on creating amazing content.
+          </p>
+        </div>
+
+        {/* Desktop: Keep animations */}
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-16 hidden md:block"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6 }}
@@ -112,19 +133,12 @@ export const HowItWorks = () => {
           </p>
         </motion.div>
         
-        {/* Enhanced Steps Grid */}
-        <motion.div 
-          className="space-y-24"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
+        {/* Mobile: No animations */}
+        <div className="space-y-24 md:hidden">
           {steps.map((step, index) => (
-            <motion.div 
+            <div 
               key={index} 
               className="relative"
-              variants={itemVariants}
-              transition={{ duration: 1, delay: index * 0.3 }}
             >
               {/* Connection Line */}
               {index < steps.length - 1 && (
@@ -232,6 +246,164 @@ export const HowItWorks = () => {
                   </div>
                 </div>
               </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop: Keep animations */}
+        <motion.div 
+          className="space-y-24 hidden md:block"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
+          {steps.map((step, index) => (
+            <motion.div 
+              key={index} 
+              className="relative"
+              variants={itemVariants}
+              transition={{ duration: 1, delay: index * 0.3 }}
+            >
+              {/* Connection Line */}
+              {index < steps.length - 1 && (
+                <motion.div 
+                  className="absolute left-1/2 top-full w-0.5 h-24 bg-gradient-to-b from-primary/50 to-transparent z-0"
+                  initial={{ scaleY: 0 }}
+                  animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
+                  transition={{ delay: index * 0.3 + 1, duration: 0.8 }}
+                />
+              )}
+              
+              <div className={`grid lg:grid-cols-2 gap-16 items-center ${
+                index % 2 === 1 ? 'lg:grid-flow-col-dense' : ''
+              }`}>
+                {/* Media Section */}
+                <motion.div 
+                  className={`relative ${index % 2 === 1 ? 'lg:col-start-2' : ''}`}
+                  initial={{ opacity: 0, x: index % 2 === 1 ? 80 : -80 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: index % 2 === 1 ? 80 : -80 }}
+                  transition={{ delay: index * 0.3 + 0.5, duration: 1, ease: "easeOut" }}
+                >
+                  <div className="relative group">
+                    {/* Simplified Background Glow */}
+                    <div 
+                      className={`absolute inset-0 bg-gradient-to-r ${step.gradient} rounded-3xl opacity-20 blur-2xl`}
+                    />
+                    
+                    {/* Step Number Badge */}
+                    <div 
+                      className={`absolute -top-6 -left-6 w-16 h-16 bg-gradient-to-r ${step.gradient} rounded-2xl flex items-center justify-center z-30 neon-glow`}
+                    >
+                      <span className="text-white font-bold text-xl font-display">{step.step}</span>
+                    </div>
+                    
+                    {/* Media Content */}
+                    <div className="relative z-10">
+                      {step.isVideo ? (
+                        <video
+                          src={step.video}
+                          className="w-full h-auto rounded-3xl shadow-2xl border border-primary/20 glass-card"
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          controls={false}
+                          onError={(e) => {
+                            console.error('Video loading error:', e);
+                          }}
+                        />
+                      ) : (
+                        <img
+                          src={step.image}
+                          alt={step.alt}
+                          className="w-full h-auto rounded-3xl shadow-2xl border border-primary/20 glass-card"
+                          onError={(e) => {
+                            console.error('Image loading error:', e);
+                          }}
+                        />
+                      )}
+                    </div>
+                    
+                    {/* Enhanced Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent rounded-3xl" />
+                    
+                    {/* Play Button for Videos */}
+                    {step.isVideo && (
+                      <motion.div 
+                        className="absolute inset-0 flex items-center justify-center z-20"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: index * 0.3 + 1.5, duration: 0.5 }}
+                      >
+                        <motion.div 
+                          className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30 neon-glow"
+                          whileHover={{ scale: 1.1 }}
+                          animate={{ 
+                            scale: [1, 1.05, 1],
+                            opacity: [0.8, 1, 0.8]
+                          }}
+                          transition={{ 
+                            duration: 2, 
+                            repeat: Infinity, 
+                            ease: "easeInOut" 
+                          }}
+                        >
+                          <div className="w-0 h-0 border-l-[16px] border-l-white border-t-[12px] border-t-transparent border-b-[12px] border-b-transparent ml-1" />
+                        </motion.div>
+                      </motion.div>
+                    )}
+                  </div>
+                </motion.div>
+                
+                {/* Content Section */}
+                <motion.div 
+                  className={`text-center lg:text-left ${index % 2 === 1 ? 'lg:col-start-1' : ''}`}
+                  initial={{ opacity: 0, x: index % 2 === 1 ? -80 : 80 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: index % 2 === 1 ? -80 : 80 }}
+                  transition={{ delay: index * 0.3 + 0.8, duration: 1, ease: "easeOut" }}
+                >
+                  <div className="relative p-10 rounded-3xl border border-primary/20 hover:border-primary/40 transition-all duration-500 group overflow-hidden">
+                    {/* Enhanced Background Layers */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-white/3 to-transparent rounded-3xl" />
+                    <div className="absolute inset-0 bg-gradient-to-tl from-primary/5 via-transparent to-accent/5 rounded-3xl" />
+                    <div className="absolute inset-0 backdrop-blur-xl bg-black/10 rounded-3xl" />
+                    
+                    {/* Content Container */}
+                    <div className="relative z-10">
+                      {/* Step Icon */}
+                      <motion.div 
+                        className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r ${step.gradient} rounded-2xl mb-6 neon-glow`}
+                        whileHover={{ 
+                          scale: 1.15,
+                          rotate: 15,
+                          boxShadow: "0 0 30px rgba(var(--primary), 0.8)"
+                        }}
+                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                      >
+                        <step.icon className="w-8 h-8 text-white" />
+                      </motion.div>
+                      
+                      <motion.h3 
+                        className="text-3xl lg:text-4xl font-display font-bold mb-6 text-foreground"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                        transition={{ delay: index * 0.3 + 1.2, duration: 0.6 }}
+                      >
+                        {step.title}
+                      </motion.h3>
+                      
+                      <motion.p 
+                        className="text-lg text-foreground/70 leading-relaxed"
+                        initial={{ opacity: 0 }}
+                        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                        transition={{ delay: index * 0.3 + 1.4, duration: 0.6 }}
+                      >
+                        {step.description}
+                      </motion.p>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
             </motion.div>
           ))}
         </motion.div>
@@ -322,6 +494,6 @@ export const HowItWorks = () => {
           </div>
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 };

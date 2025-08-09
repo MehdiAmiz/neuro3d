@@ -46,7 +46,7 @@ export const MobileApp = () => {
   };
 
   return (
-    <motion.section 
+    <section 
       ref={ref}
       id="mobile-app" 
       className="py-24 relative overflow-hidden"
@@ -55,13 +55,32 @@ export const MobileApp = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-purple-500/5" />
       
       <div className="container mx-auto px-4 relative z-10">
+        {/* Mobile: No animations */}
+        <div className="text-center mb-16 md:hidden">
+          <div 
+            className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-3xl mb-8"
+          >
+            <Smartphone className="w-12 h-12 text-white" />
+          </div>
+          
+          <h2 className="text-4xl lg:text-5xl font-display font-bold mb-8">
+            Mobile App{" "}
+            <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent">
+              Coming Soon
+            </span>
+          </h2>
+          <p className="text-xl text-foreground/70 max-w-4xl mx-auto leading-relaxed">
+            Take NexodusAI with you everywhere. Our mobile app will bring the full power of AI-powered 3D conversion to your smartphone.
+          </p>
+        </div>
+
+        {/* Desktop: Keep animations */}
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-16 hidden md:block"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6 }}
         >
-          {/* Main Section Icon */}
           <div 
             className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-3xl mb-8"
           >
@@ -80,9 +99,60 @@ export const MobileApp = () => {
         </motion.div>
         
         <div className="grid lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto">
-          {/* Mobile App Preview */}
+          {/* Mobile: No animations */}
+          <div className="relative md:hidden">
+            <div className="relative">
+              {/* Phone Frame */}
+              <div className="relative mx-auto w-80 h-[600px] bg-gradient-to-br from-gray-900 to-gray-800 rounded-[3rem] p-3 shadow-2xl">
+                <div className="w-full h-full bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-cyan-500/20 rounded-[2.5rem] p-6 relative overflow-hidden">
+                  {/* App Interface Mockup */}
+                  <div className="space-y-4">
+                    {/* Header */}
+                    <div className="text-center">
+                      <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl mx-auto mb-3 flex items-center justify-center">
+                        <Sparkles className="w-8 h-8 text-white" />
+                      </div>
+                      <h3 className="text-white font-bold text-lg">NexodusAI</h3>
+                      <p className="text-white/70 text-sm">AI 3D Converter</p>
+                    </div>
+                    
+                    {/* Upload Area */}
+                    <div className="bg-white/10 rounded-2xl p-4 border-2 border-dashed border-white/30">
+                      <div className="text-center">
+                        <Download className="w-8 h-8 text-white/60 mx-auto mb-2" />
+                        <p className="text-white/80 text-sm">Tap to upload image</p>
+                      </div>
+                    </div>
+                    
+                    {/* Feature Pills */}
+                    <div className="flex flex-wrap gap-2">
+                      <div className="bg-blue-500/20 px-3 py-1 rounded-full">
+                        <span className="text-blue-300 text-xs">AI Processing</span>
+                      </div>
+                      <div className="bg-purple-500/20 px-3 py-1 rounded-full">
+                        <span className="text-purple-300 text-xs">3D Preview</span>
+                      </div>
+                      <div className="bg-green-500/20 px-3 py-1 rounded-full">
+                        <span className="text-green-300 text-xs">Export 3D Model</span>
+                      </div>
+                    </div>
+                    
+                    {/* Coming Soon Badge */}
+                    <div className="bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl p-3 text-center">
+                      <p className="text-white font-bold text-sm">🚀 Coming Soon</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Glow Effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-[3rem] blur-3xl -z-10" />
+            </div>
+          </div>
+
+          {/* Desktop: Keep animations */}
           <motion.div 
-            className="relative"
+            className="relative hidden md:block"
             initial={{ opacity: 0, x: -60 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -60 }}
             transition={{ delay: 0.4, duration: 0.8 }}
@@ -128,8 +198,6 @@ export const MobileApp = () => {
                       <p className="text-white font-bold text-sm">🚀 Coming Soon</p>
                     </div>
                   </div>
-                  
-                  {/* Removed floating elements for mobile performance */}
                 </div>
               </div>
               
@@ -138,9 +206,68 @@ export const MobileApp = () => {
             </div>
           </motion.div>
           
-          {/* Features List */}
+          {/* Mobile: No animations */}
+          <div className="space-y-8 md:hidden">
+            {features.map((feature, index) => (
+              <div 
+                key={index} 
+                className="group"
+              >
+                <div className="flex items-start space-x-4">
+                  <div 
+                    className={`w-12 h-12 bg-gradient-to-r ${feature.gradient} rounded-xl flex items-center justify-center flex-shrink-0`}
+                  >
+                    <feature.icon className="w-6 h-6 text-white" />
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-blue-400 transition-colors duration-300">
+                      {feature.title}
+                    </h3>
+                    <p className="text-foreground/70 leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+            
+            {/* CTA Section */}
+            <div 
+              className="mt-12 p-6 rounded-2xl bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-white/20"
+            >
+              <h4 className="text-lg font-bold text-foreground mb-3">
+                Be the First to Know
+              </h4>
+              <p className="text-foreground/70 mb-4">
+                Get notified when our mobile app launches and receive early access.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link to="/app">
+                  <Button 
+                    className="bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:shadow-lg hover:scale-105 transition-all duration-300"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Join Waitlist
+                  </Button>
+                </Link>
+                <Link to="/app">
+                  <Button 
+                    variant="outline" 
+                    className="border-white/20 text-foreground hover:bg-white/5"
+                  >
+                    Learn More
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop: Keep animations */}
           <motion.div 
-            className="space-y-8"
+            className="space-y-8 hidden md:block"
             variants={containerVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
@@ -213,6 +340,6 @@ export const MobileApp = () => {
           </motion.div>
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 }; 
