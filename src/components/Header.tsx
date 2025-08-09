@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Menu, X, User, LogOut, Settings, Home, AppWindow } from "lucide-react";
+import { Menu, X, User, LogOut, Settings, Home, AppWindow, Zap, Star, CreditCard, MessageCircle, HelpCircle, Mail } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
@@ -210,37 +210,40 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
                 <div className="relative z-10 flex flex-col space-y-4 pt-4 px-4 items-center">
                   {/* Show full navigation only on homepage */}
                   {!isOnAppPage && !isOnProfilePage && [
-                    { href: "#hero", label: "Home", isLink: false },
-                    { href: "/app", label: "App", isLink: true },
-                    { href: "#features", label: "Features", isLink: false },
-                    { href: "#pricing", label: "Pricing", isLink: false },
-                    { href: "#reviews", label: "Reviews", isLink: false },
-                    { href: "#faq", label: "FAQ", isLink: false },
-                    { href: "#contact", label: "Contact", isLink: false }
-                  ].map((link, index) => (
-                    link.isLink ? (
+                    { href: "#hero", label: "Home", isLink: false, icon: Home },
+                    { href: "/app", label: "App", isLink: true, icon: AppWindow },
+                    { href: "#features", label: "Features", isLink: false, icon: Zap },
+                    { href: "#pricing", label: "Pricing", isLink: false, icon: CreditCard },
+                    { href: "#reviews", label: "Reviews", isLink: false, icon: Star },
+                    { href: "#faq", label: "FAQ", isLink: false, icon: HelpCircle },
+                    { href: "#contact", label: "Contact", isLink: false, icon: Mail }
+                  ].map((link, index) => {
+                    const IconComponent = link.icon;
+                    return link.isLink ? (
                       <Link
                         key={link.href}
                         to={link.href}
-                        className="text-white hover:text-blue-300 transition-colors py-2 font-medium block text-center"
+                        className="text-white hover:text-blue-300 transition-colors py-2 font-medium block text-center flex items-center justify-center space-x-2"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        {link.label}
+                        <IconComponent className="w-5 h-5" />
+                        <span>{link.label}</span>
                       </Link>
                     ) : (
                       <motion.a 
                         key={link.href}
                         href={link.href} 
-                        className="text-white hover:text-blue-300 transition-colors py-2 font-medium block text-center"
+                        className="text-white hover:text-blue-300 transition-colors py-2 font-medium block text-center flex items-center justify-center space-x-2"
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1, duration: 0.3 }}
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        {link.label}
+                        <IconComponent className="w-5 h-5" />
+                        <span>{link.label}</span>
                       </motion.a>
-                    )
-                  ))}
+                    );
+                  })}
                   
                   {/* Simplified menu for App and Profile pages */}
                   {(isOnAppPage || isOnProfilePage) && (
