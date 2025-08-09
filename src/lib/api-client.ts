@@ -7,6 +7,7 @@ interface ApiResponse<T> {
   error?: string;
   user?: any;
   users?: any[];
+  analytics?: any;
   exists?: boolean;
   oldCredits?: number;
   newCredits?: number;
@@ -113,6 +114,14 @@ class ApiClient {
     });
   }
 
+  async getAnalytics() {
+    return this.request('/admin/analytics');
+  }
+
+  async getAnalyticsByPeriod(period: string) {
+    return this.request(`/admin/analytics/${period}`);
+  }
+
   // Health check
   async healthCheck() {
     return this.request('/health');
@@ -182,5 +191,15 @@ export const userService = {
   async deleteUser(id: string) {
     const response = await apiClient.deleteUser(id);
     return response.success;
+  },
+
+  async getAnalytics() {
+    const response = await apiClient.getAnalytics();
+    return response.analytics;
+  },
+
+  async getAnalyticsByPeriod(period: string) {
+    const response = await apiClient.getAnalyticsByPeriod(period);
+    return response.analytics;
   },
 };

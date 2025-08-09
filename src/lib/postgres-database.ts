@@ -74,6 +74,132 @@ export class PostgresDatabase {
     return result.rows;
   }
 
+  async getAnalytics() {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const monthAgo = new Date(today.getFullYear(), now.getMonth() - 1, now.getDate());
+
+    // Total users
+    const totalUsersResult = await this.pool.query('SELECT COUNT(*) as count FROM users');
+    const totalUsers = parseInt(totalUsersResult.rows[0].count);
+
+    // Users created today
+    const todayUsersResult = await this.pool.query(
+      'SELECT COUNT(*) as count FROM users WHERE created_at >= $1',
+      [today]
+    );
+    const todayUsers = parseInt(todayUsersResult.rows[0].count);
+
+    // Users created this week
+    const weekUsersResult = await this.pool.query(
+      'SELECT COUNT(*) as count FROM users WHERE created_at >= $1',
+      [weekAgo]
+    );
+    const weekUsers = parseInt(weekUsersResult.rows[0].count);
+
+    // Users created this month
+    const monthUsersResult = await this.pool.query(
+      'SELECT COUNT(*) as count FROM users WHERE created_at >= $1',
+      [monthAgo]
+    );
+    const monthUsers = parseInt(monthUsersResult.rows[0].count);
+
+    // Total credits across all users
+    const totalCreditsResult = await this.pool.query('SELECT SUM(credits) as total FROM users');
+    const totalCredits = parseInt(totalCreditsResult.rows[0].total || '0');
+
+    // Average credits per user
+    const avgCreditsResult = await this.pool.query('SELECT AVG(credits) as average FROM users');
+    const avgCredits = parseFloat(avgCreditsResult.rows[0].average || '0');
+
+    // Users with credits > 0
+    const usersWithCreditsResult = await this.pool.query(
+      'SELECT COUNT(*) as count FROM users WHERE credits > 0'
+    );
+    const usersWithCredits = parseInt(usersWithCreditsResult.rows[0].count);
+
+    // Admin users
+    const adminUsersResult = await this.pool.query(
+      'SELECT COUNT(*) as count FROM users WHERE is_admin = true'
+    );
+    const adminUsers = parseInt(adminUsersResult.rows[0].count);
+
+    // Recent activity (users created in last 7 days)
+    const recentActivityResult = await this.pool.query(
+      'SELECT DATE(created_at) as date, COUNT(*) as count FROM users WHERE created_at >= $1 GROUP BY DATE(created_at) ORDER BY date DESC',
+      [weekAgo]
+    );
+
+    return {
+      totalUsers,
+      todayUsers,
+      weekUsers,
+      monthUsers,
+      totalCredits,
+      avgCredits: Math.round(avgCredits * 100) / 100,
+      usersWithCredits,
+      adminUsers,
+      recentActivity: recentActivityResult.rows,
+      periods: {
+        today: {
+          users: todayUsers,
+          percentage: totalUsers > 0 ? Math.round((todayUsers / totalUsers) * 100) : 0
+        },
+        week: {
+          users: weekUsers,
+          percentage: totalUsers > 0 ? Math.round((weekUsers / totalUsers) * 100) : 0
+        },
+        month: {
+          users: monthUsers,
+          percentage: totalUsers > 0 ? Math.round((monthUsers / totalUsers) * 100) : 0
+        }
+      }
+    };
+  }
+
+  async getAnalyticsByPeriod(period: string) {
+    const now = new Date();
+    let startDate: Date;
+
+    switch (period) {
+      case 'today':
+        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        break;
+      case 'week':
+        startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        break;
+      case 'month':
+        startDate = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+        break;
+      case 'all':
+        startDate = new Date(0); // Beginning of time
+        break;
+      default:
+        throw new Error('Invalid period');
+    }
+
+    const usersResult = await this.pool.query(
+      'SELECT COUNT(*) as count FROM users WHERE created_at >= $1',
+      [startDate]
+    );
+    const users = parseInt(usersResult.rows[0].count);
+
+    const creditsResult = await this.pool.query(
+      'SELECT SUM(credits) as total FROM users WHERE created_at >= $1',
+      [startDate]
+    );
+    const credits = parseInt(creditsResult.rows[0].total || '0');
+
+    return {
+      period,
+      users,
+      credits,
+      startDate: startDate.toISOString(),
+      endDate: now.toISOString()
+    };
+  }
+
   async deleteUser(id: string): Promise<boolean> {
     const result = await this.pool.query('DELETE FROM users WHERE id = $1', [id]);
     return result.rowCount > 0;
@@ -160,6 +286,14 @@ export const userService = {
 
   async deleteUser(id: string) {
     return postgresDb.deleteUser(id);
+  },
+
+  async getAnalytics() {
+    return postgresDb.getAnalytics();
+  },
+
+  async getAnalyticsByPeriod(period: string) {
+    return postgresDb.getAnalyticsByPeriod(period);
   },
 
   async verifyPassword(user: User, password: string) {

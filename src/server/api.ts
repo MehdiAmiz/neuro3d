@@ -186,6 +186,33 @@ router.get('/admin/users', async (req, res) => {
   }
 });
 
+router.get('/admin/analytics', async (req, res) => {
+  try {
+    const analytics = await userService.getAnalytics();
+    res.status(200).json({ success: true, analytics });
+  } catch (error) {
+    console.error('Get analytics error:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Failed to get analytics' 
+    });
+  }
+});
+
+router.get('/admin/analytics/:period', async (req, res) => {
+  try {
+    const { period } = req.params; // today, week, month, all
+    const analytics = await userService.getAnalyticsByPeriod(period);
+    res.status(200).json({ success: true, analytics });
+  } catch (error) {
+    console.error('Get analytics by period error:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Failed to get analytics' 
+    });
+  }
+});
+
 router.delete('/admin/users/:id', async (req, res) => {
   try {
     const { id } = req.params;
