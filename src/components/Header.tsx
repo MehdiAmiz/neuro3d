@@ -190,7 +190,7 @@ export const Header = ({ isAppPage = false }: HeaderProps) => {
           <AnimatePresence>
             {isMenuOpen && (
               <motion.nav 
-                className="md:hidden mt-4 pb-4 rounded-lg border border-white/20 bg-neutral-950/95 backdrop-blur"
+                className="md:hidden mt-4 pb-4 rounded-xl border border-white/10 bg-gradient-to-br from-blue-600/95 via-purple-600/95 to-cyan-500/95 backdrop-blur shadow-xl shadow-blue-500/10"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
